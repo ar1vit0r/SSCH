@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>--module-path C:\Program Files\NetBeans-12.1\netbeans\javafx\openjfx-15.0.1_windows-x64_bin-sdk\javafx-sdk-15.0.1\lib --add-modules javafx.controls,javafx.fxml --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED -classpath %classpath com.ps.projetotestescene.App</exec.args>
+                <exec.executable>java</exec.executable>
+                <exec.workingdir>C:\Users\Matheus Chaves\Documents\NetBeansProjects\2020-02-PS\edu\pssim\ProjetoTestescene</exec.workingdir>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} --module-path C:\Program Files\NetBeans-12.1\netbeans\javafx\openjfx-15.0.1_windows-x64_bin-sdk\javafx-sdk-15.0.1\lib --add-modules javafx.controls,javafx.fxml --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED -classpath %classpath com.ps.projetotestescene.App</exec.args>
+                <exec.executable>java</exec.executable>
+                <jpda.listen>true</jpda.listen>
+                <exec.workingdir>C:\Users\Matheus Chaves\Documents\NetBeansProjects\2020-02-PS\edu\pssim\ProjetoTestescene</exec.workingdir>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>--module-path C:\Program Files\NetBeans-12.1\netbeans\javafx\openjfx-15.0.1_windows-x64_bin-sdk\javafx-sdk-15.0.1\lib --add-modules javafx.controls,javafx.fxml --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED -classpath %classpath com.ps.projetotestescene.App</exec.args>
+                <exec.executable>java</exec.executable>
+                <exec.workingdir>C:\Users\Matheus Chaves\Documents\NetBeansProjects\2020-02-PS\edu\pssim\ProjetoTestescene</exec.workingdir>
+            </properties>
+        </action>
+    </actions>
