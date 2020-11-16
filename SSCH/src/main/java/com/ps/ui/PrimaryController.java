@@ -33,10 +33,9 @@ import com.ps.montador.Montador;
 public class PrimaryController implements Initializable {
 
     public static Scene scene2;
-    public VM vm;
+
     public Montador montador = new Montador();
-    private FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-    private SecondaryController controller;
+    
     
     @FXML
     private ToggleGroup fileSelect;
@@ -47,34 +46,36 @@ public class PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        vm = new VM();
         
-        vm.regs.pc = 1;
-        vm.memory = new short[] {1,1,1,2,1,(short)Instruction.STOP.opcode};
-        while(!vm.step().instruction.isSTOP()) {
-            System.out.println("Ran instruction");
-        }
-        System.out.println("Stopped");
+        
     }    
     
     @FXML
     private void executeAll() throws IOException {       
-        Parent root = loader.load(getClass().getResource("secondary.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+        Parent root = (Parent) loader.load();
+        SecondaryController controller = SecondaryController.getInstance();
+        System.out.println(controller);
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 800);
         stage.setScene(scene2);
         stage.show();
-        controller.getInstance();
-        controller.inicializaNaTabelaMem(vm);
+        controller.inicializaNaTabelaMem();
         
     }
 
     @FXML
-    private void executeSTEP(ActionEvent event) {
+    private void executeSTEP(ActionEvent event) throws IOException {
+        
     }
 
+    private void nextStep(){
+       
+    }
+    
     @FXML
     private void stopAll(ActionEvent event) {
+        nextStep();
     }
 
     @FXML
