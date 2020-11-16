@@ -54,7 +54,7 @@ public class PrimaryController implements Initializable {
     private void executeAll() throws IOException {       
         FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
         Parent root = (Parent) loader.load();
-        SecondaryController controller = SecondaryController.getInstance();
+        SecondaryController controller = (SecondaryController) loader.getController();
         System.out.println(controller);
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 800);
