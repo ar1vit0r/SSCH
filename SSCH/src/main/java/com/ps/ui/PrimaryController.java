@@ -5,6 +5,7 @@
  */
 package com.ps.ui;
 
+import com.ps.executor.Instruction;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import com.ps.executor.VM;
+import com.ps.montador.Montador;
 
 /**
  * FXML Controller class
@@ -30,6 +33,10 @@ import javafx.stage.Stage;
 public class PrimaryController implements Initializable {
 
     public static Scene scene2;
+    public VM vm;
+    public Montador montador = new Montador();
+    private FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+    private SecondaryController controller;
     
     @FXML
     private ToggleGroup fileSelect;
@@ -40,16 +47,26 @@ public class PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        vm = new VM();
+        
+        vm.regs.pc = 1;
+        vm.memory = new short[] {1,1,1,2,1,(short)Instruction.STOP.opcode};
+        while(!vm.step().instruction.isSTOP()) {
+            System.out.println("Ran instruction");
+        }
+        System.out.println("Stopped");
     }    
     
     @FXML
-    private void executeAll() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("secondary.fxml"));
+    private void executeAll() throws IOException {       
+        Parent root = loader.load(getClass().getResource("secondary.fxml"));
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 800);
         stage.setScene(scene2);
         stage.show();
+        controller.getInstance();
+        controller.inicializaNaTabelaMem(vm);
+        
     }
 
     @FXML

@@ -23,27 +23,30 @@ import com.ps.models.EntradaTabela;
 
 
 public class SecondaryController implements Initializable{
-   
+    
+    
+    private static SecondaryController INSTANCE;
     private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>();
     private ObservableList<EntradaTabela> obsEntradaTabela;
     
     private List<EntradaTabela> listaDeEntradaPilha = new ArrayList<>();
     private ObservableList<EntradaTabela> obsEntradaPilha;
     
+    public static final String SingleTon = "Esse eu vejo fora";
+    
+    private SecondaryController(){    
+    }
+    
+    public static SecondaryController getInstance(){
+        if (INSTANCE == null){
+            INSTANCE = new SecondaryController();
+        }
+        
+        return INSTANCE;
+    }
     
     @Override
     public void initialize (URL location, ResourceBundle resources) {
-        VM vm = new VM();
-
-        vm.regs.pc = 1;
-        vm.memory = new short[] {1,1,1,2,1,(short)Instruction.STOP.opcode};
-        while(!vm.step().instruction.isSTOP()) {
-            System.out.println("Ran instruction");
-        }
-        System.out.println("Stopped");
-       
-        
-        this.inicializaNaTabelaMem(vm);
     }
     
     @FXML
