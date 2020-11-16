@@ -34,7 +34,7 @@ public class SecondaryController implements Initializable{
     
     public static final String SingleTon = "Esse eu vejo fora";
     
-    private SecondaryController(){    
+    public SecondaryController(){    
     }
     
     public static SecondaryController getInstance(){
