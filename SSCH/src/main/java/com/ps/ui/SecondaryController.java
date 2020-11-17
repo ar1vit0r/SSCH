@@ -1,26 +1,22 @@
 package com.ps.ui;
 
-
+import com.ps.executor.VM;
 import com.ps.executor.Instruction;
-import java.io.IOException;
+import com.ps.models.EntradaTabela;
+
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.Scene;
-import com.ps.executor.VM;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import com.ps.models.EntradaTabela;
-
 
 public class SecondaryController implements Initializable{
     
@@ -131,7 +127,7 @@ public class SecondaryController implements Initializable{
           for(int i=0; i<memoria.memory.length;i++){
             EntradaTabela entrada = new EntradaTabela( i, memoria.memory[i]);
             listaDeEntradaTabela.add(entrada);
-            if(i>2 && i<=(memoria.memory[memoria.stack_base]+2)){
+            if(i>2 && i<(memoria.memory[memoria.stack_base])){
                 enchePilha(entrada);
             }
             
