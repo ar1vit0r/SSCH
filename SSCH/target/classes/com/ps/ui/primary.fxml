@@ -8,6 +8,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -41,7 +42,7 @@
             <Separator layoutX="292.0" layoutY="12.0" orientation="VERTICAL" prefHeight="140.0" prefWidth="17.0" />
             <Pane layoutX="321.0" layoutY="26.0" prefHeight="111.0" prefWidth="265.0">
                <children>
-                  <RadioButton layoutX="11.0" layoutY="56.0" mnemonicParsing="false" onAction="#thisFile" selected="true" text="Arquivo Integrado" textFill="DARKORANGE">
+                  <RadioButton layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#thisFile" selected="true" text="Arquivo Integrado" textFill="DARKORANGE">
                      <toggleGroup>
                         <ToggleGroup fx:id="fileSelect" />
                      </toggleGroup>
@@ -49,10 +50,27 @@
                         <Font name="Times New Roman" size="12.0" />
                      </font>
                   </RadioButton>
-                  <RadioButton layoutX="11.0" layoutY="80.0" mnemonicParsing="false" onAction="#loadFile" text="Carregar Arquivo" textFill="DARKORANGE" toggleGroup="$fileSelect">
+                  <RadioButton layoutX="138.0" layoutY="30.0" mnemonicParsing="false" onAction="#loadFile" text="Carregar Arquivo" textFill="DARKORANGE" toggleGroup="$fileSelect">
                      <font>
                         <Font name="Times New Roman" size="12.0" />
                      </font></RadioButton>
+                  <Label layoutX="36.0" layoutY="5.0" text="Seleção de Arquivo" textFill="DARKORANGE">
+                     <font>
+                        <Font name="Times New Roman" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="35.0" layoutY="56.0" prefHeight="18.0" prefWidth="121.0" text="Tamanho da Pilha" textFill="DARKORANGE">
+                     <font>
+                        <Font name="Times New Roman" size="15.0" />
+                     </font>
+                  </Label>
+                  <RadioButton layoutX="14.0" layoutY="82.0" mnemonicParsing="false" selected="true" text="Padrão" textFill="DARKORANGE">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="stackSelect" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton layoutX="106.0" layoutY="82.0" mnemonicParsing="false" text="Selecionar" textFill="DARKORANGE" toggleGroup="$stackSelect" />
+                  <TextField layoutX="191.0" layoutY="78.0" opacity="0.79" prefHeight="25.0" prefWidth="50.0" text="20" />
                </children>
             </Pane>
             <Label layoutX="59.0" layoutY="-17.0" prefHeight="32.0" prefWidth="472.0" style="-fx-font-family: Times New Roman;" text="Simulador de Sistema Computacional Hipotético" textAlignment="CENTER" textFill="DARKORANGE">

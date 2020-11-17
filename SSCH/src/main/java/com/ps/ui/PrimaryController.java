@@ -38,6 +38,7 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private ToggleGroup fileSelect;
+    private ToggleGroup stackSelect;
     private File selectedFile;
     private TextArea integratedFile;
     /**
