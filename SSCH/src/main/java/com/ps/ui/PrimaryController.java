@@ -5,7 +5,6 @@
  */
 package com.ps.ui;
 
-import com.ps.executor.Instruction;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -22,8 +21,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import com.ps.executor.VM;
 import com.ps.montador.Montador;
+
 
 /**
  * FXML Controller class
@@ -50,16 +49,19 @@ public class PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        
+        // TODO
     }    
     
     @FXML
+<<<<<<< HEAD
     private void executeAll() throws IOException {       
         //if(!fileChoser){
             // ler o texto do programa e chamar o montador aqui
         //} //else montador.main(selectedFile , vm.stack_base);
         
+=======
+    private void executeAll() throws IOException {
+>>>>>>> 597c8abb9f05fbd93f32983eedffbd9e45a29d09
         FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
         Parent root = (Parent) loader.load();
         controller = (SecondaryController) loader.getController();
