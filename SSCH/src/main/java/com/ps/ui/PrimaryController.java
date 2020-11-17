@@ -1,29 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ps.ui;
 
 import com.ps.executor.VM;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import com.ps.montador.Montador;
+
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
-import javafx.scene.control.ToggleGroup;
-import javafx.stage.FileChooser;
-import java.io.File;
-import java.io.IOException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import com.ps.montador.Montador;
+import javafx.stage.FileChooser;
+import javafx.event.ActionEvent;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * FXML Controller class
@@ -33,14 +28,12 @@ import com.ps.montador.Montador;
 public class PrimaryController implements Initializable {
 
     public static Scene scene2;
+    public Montador montador = new Montador();
     private SecondaryController controller;
     private VM vm = VM.getInstance();
     private Boolean fileChoser = false;
     private int stack_base = 20;
 
-    public Montador montador = new Montador();
-    
-    
     @FXML
     private ToggleGroup fileSelect;
     private File selectedFile;
@@ -54,10 +47,8 @@ public class PrimaryController implements Initializable {
     }    
     
     @FXML
-    private void executeAll() throws IOException {       
-        
-        //montador.main(selectedFile , vm.stack_base, fileChoeser);
-        
+    private void executeAll() throws IOException {          
+        //montador.main(selectedFile , vm.stack_base, fileChoeser); 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
         Parent root = (Parent) loader.load();
         controller = (SecondaryController) loader.getController();
@@ -66,6 +57,7 @@ public class PrimaryController implements Initializable {
         scene2 = new Scene(root, 750, 800);
         stage.setScene(scene2);
         stage.show();
+        
         controller.inicializaNaTabelaMem();
         
     }
@@ -86,11 +78,11 @@ public class PrimaryController implements Initializable {
 
     private void nextStep(){
         vm.step();
-       controller.inicializaNaTabelaMem();
+        controller.inicializaNaTabelaMem();
     }
     
     @FXML
-    private void stopAll(ActionEvent event) {
+    private void stepbyStep(ActionEvent event) {
         nextStep();
     }
 

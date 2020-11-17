@@ -1,11 +1,9 @@
 package com.ps.executor;
 
-import com.ps.executor.PseudoInstructions;
-import com.ps.executor.Registers;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+
 import java.util.Scanner;
 
 public class InstructionAction
@@ -247,19 +245,15 @@ public class InstructionAction
     };
 
     // output_stream <- opd1
-    public static Interface WRITE = new Interface()
-    {
-        public ExecutionLog run(Registers regs, short[] memory, int _0, InputStream _1, OutputStream output)
-        {
-            PseudoInstructions.set_re(regs, memory);
-            PseudoInstructions.memfetch(regs, memory);
-    
-            try {output.write( Short.toString(regs.re).getBytes() );output.write('\n');}
-            catch(IOException e) {/*ignore*/};
-    
-            regs.pc += 2;
-    
-            return PseudoInstructions.generateLog(regs, memory);
-        }
+    public static Interface WRITE = (Registers regs, short[] memory, int _0, InputStream _1, OutputStream output) -> {
+        PseudoInstructions.set_re(regs, memory);
+        PseudoInstructions.memfetch(regs, memory);
+        
+        try {output.write( Short.toString(regs.re).getBytes() );output.write('\n');}
+        catch(IOException e) {/*ignore*/};
+        
+        regs.pc += 2;
+        
+        return PseudoInstructions.generateLog(regs, memory);
     };
 }

@@ -1,7 +1,5 @@
 package com.ps.ui;
 
-import com.ps.executor.Instruction;
-import com.ps.executor.VM;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,9 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import com.ps.ui.SecondaryController;
-import com.ps.ui.PrimaryController;
-import static com.ps.ui.PrimaryController.scene2;
 
 /**
  * JavaFX App

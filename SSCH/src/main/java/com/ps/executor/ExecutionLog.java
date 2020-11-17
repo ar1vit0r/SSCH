@@ -1,7 +1,5 @@
 package com.ps.executor;
 
-import com.ps.executor.Instruction;
-
 public class ExecutionLog
 {
     public class MemoryUpdate
