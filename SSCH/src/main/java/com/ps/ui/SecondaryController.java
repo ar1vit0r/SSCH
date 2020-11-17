@@ -131,7 +131,7 @@ public class SecondaryController implements Initializable{
           for(int i=0; i<memoria.memory.length;i++){
             EntradaTabela entrada = new EntradaTabela( i, memoria.memory[i]);
             listaDeEntradaTabela.add(entrada);
-            if(i>1 && i<(memoria.stack_base + 2)){
+            if(i>2 && i<=(memoria.memory[memoria.stack_base]+2)){
                 enchePilha(entrada);
             }
             

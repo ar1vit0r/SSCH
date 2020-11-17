@@ -5,6 +5,7 @@
  */
 package com.ps.ui;
 
+import com.ps.executor.VM;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -54,9 +55,8 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void executeAll() throws IOException {       
-        //if(!fileChoser){
-            // ler o texto do programa e chamar o montador aqui
-        //} //else montador.main(selectedFile , vm.stack_base);
+        
+        //montador.main(selectedFile , vm.stack_base, fileChoeser);
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
         Parent root = (Parent) loader.load();
