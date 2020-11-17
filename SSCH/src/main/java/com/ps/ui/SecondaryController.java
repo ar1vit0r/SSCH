@@ -23,27 +23,29 @@ import com.ps.models.EntradaTabela;
 
 
 public class SecondaryController implements Initializable{
-   
+    
+    
+    private static SecondaryController controller = new SecondaryController();
+    private VM memoria = VM.getInstance();
     private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>();
     private ObservableList<EntradaTabela> obsEntradaTabela;
     
     private List<EntradaTabela> listaDeEntradaPilha = new ArrayList<>();
     private ObservableList<EntradaTabela> obsEntradaPilha;
     
+    public SecondaryController(){
+    
+    }
     
     @Override
     public void initialize (URL location, ResourceBundle resources) {
-        VM vm = new VM();
-
-        vm.regs.pc = 1;
-        vm.memory = new short[] {1,1,1,2,1,(short)Instruction.STOP.opcode};
-        while(!vm.step().instruction.isSTOP()) {
+        memoria.regs.pc = 1;
+        System.out.println("Foi");
+        memoria.memory = new short[] {1,1,1,2,1,(short)Instruction.STOP.opcode};
+        while(!memoria.step().instruction.isSTOP()) {
             System.out.println("Ran instruction");
         }
         System.out.println("Stopped");
-       
-        
-        this.inicializaNaTabelaMem(vm);
     }
     
     @FXML
@@ -113,7 +115,7 @@ public class SecondaryController implements Initializable{
     }
     
      @FXML
-    public void inicializaNaTabelaMem(VM memoria) {
+    public void inicializaNaTabelaMem() {
          System.out.println("Entrou");
         this.setPC(memoria);
         this.setSP(memoria);
@@ -125,10 +127,10 @@ public class SecondaryController implements Initializable{
         tbEnderecoMemoriaUm.setCellValueFactory(new PropertyValueFactory<>("endereco"));
         tbDadoMemoriaUm.setCellValueFactory(new PropertyValueFactory<>("memory"));
         
-        tbMemoriaGeral.setItems(listaDeTabela(memoria));
+        tbMemoriaGeral.setItems(listaDeTabela());
     }
 
-    private ObservableList<EntradaTabela> listaDeTabela(VM memoria){
+    private ObservableList<EntradaTabela> listaDeTabela(){
         listaDeEntradaTabela.clear();
         listaDeEntradaPilha.clear();
           for(int i=0; i<memoria.memory.length;i++){
@@ -159,5 +161,7 @@ public class SecondaryController implements Initializable{
         return tbMemoriaGeral;
     }
     
-    
+    public static synchronized SecondaryController getInstance(){
+        return controller;
+    }
 }

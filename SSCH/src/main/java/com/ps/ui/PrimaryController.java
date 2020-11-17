@@ -30,6 +30,9 @@ import javafx.stage.Stage;
 public class PrimaryController implements Initializable {
 
     public static Scene scene2;
+
+    public Montador montador = new Montador();
+    
     
     @FXML
     private ToggleGroup fileSelect;
@@ -50,14 +53,22 @@ public class PrimaryController implements Initializable {
         scene2 = new Scene(root, 750, 800);
         stage.setScene(scene2);
         stage.show();
+        controller.inicializaNaTabelaMem();
+        
     }
 
     @FXML
-    private void executeSTEP(ActionEvent event) {
+    private void executeSTEP(ActionEvent event) throws IOException {
+        
     }
 
+    private void nextStep(){
+       
+    }
+    
     @FXML
     private void stopAll(ActionEvent event) {
+        nextStep();
     }
 
     @FXML
