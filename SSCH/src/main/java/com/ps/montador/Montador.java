@@ -1,8 +1,8 @@
 package com.ps.montador;
 
 import java.io.File;
-import java.util.Scanner;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,29 +16,26 @@ import java.util.List;
 
 /**
  *
- * @author josef
+ * @author josefm, Ariam
  */
 public class Montador {
          
-    public static short[] main(String diretorio){
+    public static short[] main(String diretorio, int stackSize) throws FileNotFoundException{
         //ArrayList para armazenamento do conteudo do arquivo
         List<String> data = new ArrayList<>();
         //Tratamento de exceção para leitura do arquivo e teste para verificar se o arquivo está vazio.
-        try {
             
             File textfile = new File(diretorio);
             Scanner reader = new Scanner(textfile);
             while(reader.hasNextLine()){
                 String[] aux = reader.nextLine().split(" ");
-                if("space".equals(aux[0]) || aux[0] == "const"){
-                    aux = new String[]{aux[1]};
+                if("const".equals(aux[0])){ // elimina palavra reservada const q n é convertida
+                    aux = new String[]{"/p"+aux[1]}; //identificador para que um valor "imediato" não tenha offset sobre ele
                 }
          
                 data.addAll(Arrays.asList(aux));
             }
-        } catch (FileNotFoundException ex) {
-           
-        }
+        
         //Envio do arquivo para um vetor auxiliar
         String[] code = new String[data.size()];
         code = data.toArray(code);
@@ -100,7 +97,14 @@ public class Montador {
                 case "space":
                     break;
                 default:
-                    bin[i] =  (short)(Integer.parseInt(code[i]));
+                    if(code[i].startsWith("/p")){
+                        String aux2;
+                        aux2 = code[i];
+                        aux2 = aux2.replace("/p", "");
+                        bin[i] =  (short) Integer.parseInt(aux2);
+                    }
+                    else 
+                        bin[i] =  (short) ((Integer.parseInt(code[i])) + stackSize + 2 );
                     break;
             }
         }

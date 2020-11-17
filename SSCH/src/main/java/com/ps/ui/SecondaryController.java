@@ -39,13 +39,8 @@ public class SecondaryController implements Initializable{
     
     @Override
     public void initialize (URL location, ResourceBundle resources) {
-        memoria.regs.pc = 1;
-        System.out.println("Foi");
         memoria.memory = new short[] {1,1,1,2,1,(short)Instruction.STOP.opcode};
-        while(!memoria.step().instruction.isSTOP()) {
-            System.out.println("Ran instruction");
-        }
-        System.out.println("Stopped");
+        
     }
     
     @FXML
@@ -136,7 +131,7 @@ public class SecondaryController implements Initializable{
           for(int i=0; i<memoria.memory.length;i++){
             EntradaTabela entrada = new EntradaTabela( i, memoria.memory[i]);
             listaDeEntradaTabela.add(entrada);
-            if(i>2 && i<=(memoria.memory[2]+2)){
+            if(i>1 && i<(memoria.stack_base + 2)){
                 enchePilha(entrada);
             }
             

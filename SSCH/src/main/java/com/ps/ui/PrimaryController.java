@@ -33,6 +33,10 @@ import com.ps.montador.Montador;
 public class PrimaryController implements Initializable {
 
     public static Scene scene2;
+    private SecondaryController controller;
+    private VM vm = VM.getInstance();
+    private Boolean fileChoser = false;
+    private int stack_base = 20;
 
     public Montador montador = new Montador();
     
@@ -52,9 +56,13 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void executeAll() throws IOException {       
+        //if(!fileChoser){
+            // ler o texto do programa e chamar o montador aqui
+        //} //else montador.main(selectedFile , vm.stack_base);
+        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
         Parent root = (Parent) loader.load();
-        SecondaryController controller = (SecondaryController) loader.getController();
+        controller = (SecondaryController) loader.getController();
         System.out.println(controller);
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 800);
@@ -66,11 +74,21 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void executeSTEP(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+        Parent root = (Parent) loader.load();
+        controller = (SecondaryController) loader.getController();
+        System.out.println(controller);
+        Stage stage = new Stage();
+        scene2 = new Scene(root, 750, 800);
+        stage.setScene(scene2);
+        stage.show();
         
+        nextStep();
     }
 
     private void nextStep(){
-       
+        vm.step();
+       controller.inicializaNaTabelaMem();
     }
     
     @FXML
@@ -80,15 +98,17 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void resetAll(ActionEvent event) {
+        //Chama o montador outra vez e recarrega a memoria com os valores originais do programa
     }
 
     @FXML
     private void thisFile(ActionEvent event) {
-
+        fileChoser = false;
     }
 
     @FXML
     private void loadFile(ActionEvent event) {
+        fileChoser = true;
         FileChooser fc = new FileChooser();
         fc.setTitle("Arquivo de Entrada");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
