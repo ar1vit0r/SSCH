@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
@@ -19,6 +20,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 
 /**
  * FXML Controller class
@@ -41,6 +43,7 @@ public class PrimaryController implements Initializable {
     private ToggleGroup stackSelect;
     private File selectedFile;
     private TextArea integratedFile;
+    private TextField stackField;
     /**
      * Initializes the controller class.
      */
@@ -52,8 +55,8 @@ public class PrimaryController implements Initializable {
     @FXML
     private void executeAll() throws IOException {          
         //montador.main(selectedFile , vm.stack_base, fileChoser); 
-        executeAll = true;
         if(!executeSTEP) { 
+            executeAll = true;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
             Parent root = (Parent) loader.load();
             controller = (SecondaryController) loader.getController();
@@ -70,8 +73,8 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void executeSTEP(ActionEvent event) throws IOException {
-        executeSTEP = true;
         if (!executeAll){
+            executeSTEP = true;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
             Parent root = (Parent) loader.load();
             controller = (SecondaryController) loader.getController();
@@ -102,6 +105,22 @@ public class PrimaryController implements Initializable {
     private void resetAll(ActionEvent event) {
         //Chama o montador outra vez e recarrega a memoria com os valores originais do programa
     }
+    
+    private void defaultStack(ActionEvent event) {
+        stack_base = 20;
+        stackField.setVisible(false);
+    }
+    
+    private void otherStack(ActionEvent event) {
+        //mostrar a entrada para setar outro tamanho
+        stackField.setVisible(true);
+    }
+    
+    private void textChange(ActionEvent event) {
+        //quando o texto mudar, att a variavel
+        stack_base = parseInt(stackField.getText());
+    }
+
 
     @FXML
     private void thisFile(ActionEvent event) {

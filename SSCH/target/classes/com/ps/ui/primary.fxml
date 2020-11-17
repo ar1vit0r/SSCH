@@ -70,7 +70,7 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton layoutX="106.0" layoutY="82.0" mnemonicParsing="false" text="Selecionar" textFill="DARKORANGE" toggleGroup="$stackSelect" />
-                  <TextField layoutX="191.0" layoutY="78.0" opacity="0.79" prefHeight="25.0" prefWidth="50.0" text="20" />
+                  <TextField layoutX="191.0" layoutY="78.0" opacity="0.8" prefHeight="25.0" prefWidth="54.0" text="20" />
                </children>
             </Pane>
             <Label layoutX="59.0" layoutY="-17.0" prefHeight="32.0" prefWidth="472.0" style="-fx-font-family: Times New Roman;" text="Simulador de Sistema Computacional Hipotético" textAlignment="CENTER" textFill="DARKORANGE">
