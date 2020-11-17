@@ -5,7 +5,6 @@
  */
 package com.ps.ui;
 
-import com.ps.executor.Instruction;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -22,8 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import com.ps.executor.VM;
-import com.ps.montador.Montador;
 
 /**
  * FXML Controller class
@@ -46,16 +43,12 @@ public class PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        
+        // TODO
     }    
     
     @FXML
-    private void executeAll() throws IOException {       
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-        Parent root = (Parent) loader.load();
-        SecondaryController controller = (SecondaryController) loader.getController();
-        System.out.println(controller);
+    private void executeAll() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("secondary.fxml"));
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 800);
         stage.setScene(scene2);
