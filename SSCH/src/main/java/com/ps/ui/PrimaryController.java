@@ -21,6 +21,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import com.ps.montador.Montador;
+
 
 /**
  * FXML Controller class
@@ -48,7 +50,10 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void executeAll() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("secondary.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+        Parent root = (Parent) loader.load();
+        SecondaryController controller = (SecondaryController) loader.getController();
+        System.out.println(controller);
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 800);
         stage.setScene(scene2);
