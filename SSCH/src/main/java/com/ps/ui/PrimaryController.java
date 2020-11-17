@@ -32,6 +32,8 @@ public class PrimaryController implements Initializable {
     private SecondaryController controller;
     private VM vm = VM.getInstance();
     private Boolean fileChoser = false;
+    private Boolean executeAll = false;
+    private Boolean executeSTEP = false;
     private int stack_base = 20;
 
     @FXML
@@ -48,32 +50,38 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void executeAll() throws IOException {          
-        //montador.main(selectedFile , vm.stack_base, fileChoeser); 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-        Parent root = (Parent) loader.load();
-        controller = (SecondaryController) loader.getController();
-        System.out.println(controller);
-        Stage stage = new Stage();
-        scene2 = new Scene(root, 750, 800);
-        stage.setScene(scene2);
-        stage.show();
+        //montador.main(selectedFile , vm.stack_base, fileChoser); 
+        executeAll = true;
+        if(!executeSTEP) { 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+            Parent root = (Parent) loader.load();
+            controller = (SecondaryController) loader.getController();
+            System.out.println(controller);
+            Stage stage = new Stage();
+            scene2 = new Scene(root, 750, 800);
+            stage.setScene(scene2);
+            stage.show();
         
-        controller.inicializaNaTabelaMem();
+            controller.inicializaNaTabelaMem();
+        }
         
     }
 
     @FXML
     private void executeSTEP(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-        Parent root = (Parent) loader.load();
-        controller = (SecondaryController) loader.getController();
-        System.out.println(controller);
-        Stage stage = new Stage();
-        scene2 = new Scene(root, 750, 800);
-        stage.setScene(scene2);
-        stage.show();
+        executeSTEP = true;
+        if (!executeAll){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+            Parent root = (Parent) loader.load();
+            controller = (SecondaryController) loader.getController();
+            System.out.println(controller);
+            Stage stage = new Stage();
+            scene2 = new Scene(root, 750, 800);
+            stage.setScene(scene2);
+            stage.show();
         
-        nextStep();
+            nextStep();
+        }
     }
 
     private void nextStep(){
@@ -83,7 +91,10 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void stepbyStep(ActionEvent event) {
-        nextStep();
+        if (!executeAll && executeSTEP){
+            nextStep();
+        }
+
     }
 
     @FXML
