@@ -53,15 +53,12 @@ public class PrimaryController implements Initializable {
     }    
     
     @FXML
-<<<<<<< HEAD
     private void executeAll() throws IOException {       
         //if(!fileChoser){
             // ler o texto do programa e chamar o montador aqui
         //} //else montador.main(selectedFile , vm.stack_base);
         
-=======
     private void executeAll() throws IOException {
->>>>>>> 597c8abb9f05fbd93f32983eedffbd9e45a29d09
         FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
         Parent root = (Parent) loader.load();
         controller = (SecondaryController) loader.getController();
