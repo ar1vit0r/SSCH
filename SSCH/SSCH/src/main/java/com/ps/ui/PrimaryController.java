@@ -37,11 +37,14 @@ public class PrimaryController implements Initializable {
     private VM vm = VM.getInstance();
     //Variaveis auxiliares
     private Boolean fileChoser = false;
-    private Boolean executeAll = false;
-    private Boolean executeSTEP = false;
+    //private Boolean executeAll = false;
+    //private Boolean executeSTEP = false;
+    private Boolean newProgram = true;
     private short stack_base = 2;
     private String textIntegrated; 
     private Boolean stope = false;
+    private Boolean sceneOpen = false;
+    private Boolean changepilha = true;
 
     //Variaveis FXML
     @FXML
@@ -74,29 +77,33 @@ public class PrimaryController implements Initializable {
     //Funções de execução completa
     @FXML
     private void executeAll() throws IOException {          
-        //montador.main(selectedFile , vm.stack_base, fileChoser); 
-        if(!executeSTEP) { 
+        if(newProgram){
+            //montador.main(selectedFile , vm.stack_base, fileChoser); 
             vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
-            executeAll = true;
-            this.newScene();
-
+            //executeAll = true;
             //trabalho do carregador start
-            stack_base += 2;
+            if(changepilha){
+                stack_base += 2;
+                changepilha = false;
+            }
             vm.memory[2] = stack_base;
             vm.regs.pc = stack_base;
             //end
-            
-            this.executingAll();
-            
-            stage.show();
-
-            
-            
-            controller.inicializaNaTabelaMem();
-        }else{
-            this.executingAll();
-            controller.inicializaNaTabelaMem();
+            newProgram = false;
         }
+
+        
+            
+        this.executingAll();
+            
+        if(!sceneOpen){
+            this.newScene();
+            stage.show();
+            sceneOpen = true;
+        }
+            
+            
+        controller.inicializaNaTabelaMem();
         
     }
     private void executingAll(){
@@ -112,38 +119,40 @@ public class PrimaryController implements Initializable {
     @FXML
     private void executeSTEP(ActionEvent event) throws IOException {
         System.out.println(stope);
-        if (!executeAll){
             this.executeStep();
-        }else{
-            //fechar segunda tela
-            //executeStep();
+    }
+    private void executeStep() throws IOException{
+        if(newProgram){
+            //montador.main(selectedFile , vm.stack_base, fileChoser); 
+            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
+            //executeAll = true;
+            //trabalho do carregador start
+            if(changepilha){
+                stack_base += 2;
+                changepilha = false;
+            }
+            vm.memory[2] = stack_base;
+            vm.regs.pc = stack_base;
+            //end
+            newProgram = false;
         }
+        
+        if(!sceneOpen){
+            this.newScene();
+            stage.show();
+            sceneOpen = true;
+        }
+        
+        
+        this.nextStep();
     }
     @FXML
     private void stepbyStep(ActionEvent event) {
         System.out.println(stope);
-        if (!executeAll && executeSTEP){
             if(vm.step().instruction.isSTOP() || stope == true){
                 stope = true;
             }else nextStep();
-        }
 
-    }
-    private void executeStep() throws IOException{
-        vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
-        executeSTEP = true;
-        
-        this.newScene();
-
-        stage.show();
-        
-        //trabalho do carregador start
-        stack_base += 2;
-        vm.memory[2] = stack_base;
-        vm.regs.pc = stack_base;
-        //end
-        
-        this.nextStep();
     }
     private void nextStep(){
         vm.step();
@@ -156,7 +165,8 @@ public class PrimaryController implements Initializable {
         //Chama o montador outra vez e recarrega a memoria com os valores originais do programa e fecha e atualiza a janela 2
         //Só pra teste
         vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
-        vm.regs.pc = (short) (stack_base + 2);
+        vm.memory[2] = stack_base;
+        vm.regs.pc = stack_base;
         stope = false;
         controller.inicializaNaTabelaMem();
     }
@@ -166,13 +176,17 @@ public class PrimaryController implements Initializable {
     //Funções referentes ao tamanho da pilha
     @FXML
     private void defaultStack(ActionEvent event) {
+        newProgram = true;
+        changepilha = true;
         stack_base = 2;
         
     }
     
     @FXML
     private void otherStack(ActionEvent event) {
-        stack_base = Short.valueOf(stackField.getText());
+        newProgram = true;
+        changepilha = true;
+        //stack_base = Short.valueOf(stackField.getText());
     }
     
     @FXML
@@ -187,6 +201,7 @@ public class PrimaryController implements Initializable {
     //Função para pegar programa de arquivo externo
     @FXML
     private void loadFile(ActionEvent event) {
+        newProgram = true;
         fileChoser = true;
         FileChooser fc = new FileChooser();
         fc.setTitle("Arquivo de Entrada");
@@ -200,10 +215,12 @@ public class PrimaryController implements Initializable {
     //Função para pegar programa digitado internamente na UI
     @FXML
     private void getTextArea(InputMethodEvent event) {
+        newProgram = true;
         textIntegrated = integratedFile.getText();
     }
     @FXML
     private void thisFile(ActionEvent event) {
+        newProgram = true;
         fileChoser = false;
     }
 
