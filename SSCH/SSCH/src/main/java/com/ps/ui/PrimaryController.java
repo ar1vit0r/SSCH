@@ -30,6 +30,7 @@ public class PrimaryController implements Initializable {
 
     //Variaveis de abertura de Scenes
     public static Scene scene2;
+    private Stage stage;
     //Variaveis de instancia de classes
     public Montador montador = new Montador();
     private SecondaryController controller;
@@ -51,12 +52,23 @@ public class PrimaryController implements Initializable {
     private TextField stackField;
 
 
-    //Função de inicialização da Scene
+    //Função de inicialização da Scene atual
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //String aux = String.valueOf(stack_base);
         //stackField.setText(aux);
-    }   
+    } 
+    
+    //Função de Criação de nova scene
+    private void newScene() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+        Parent root = (Parent) loader.load();
+        controller = (SecondaryController) loader.getController();
+        System.out.println(controller);
+        stage = new Stage();
+        scene2 = new Scene(root, 750, 800);
+        stage.setScene(scene2);
+    }
 
     //Funções que chamam execução 
     //Funções de execução completa
@@ -66,13 +78,7 @@ public class PrimaryController implements Initializable {
         if(!executeSTEP) { 
             vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
             executeAll = true;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-            Parent root = (Parent) loader.load();
-            controller = (SecondaryController) loader.getController();
-            System.out.println(controller);
-            Stage stage = new Stage();
-            scene2 = new Scene(root, 750, 800);
-            stage.setScene(scene2);
+            this.newScene();
 
             //trabalho do carregador start
             stack_base += 2;
@@ -126,13 +132,9 @@ public class PrimaryController implements Initializable {
     private void executeStep() throws IOException{
         vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
         executeSTEP = true;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-        Parent root = (Parent) loader.load();
-        controller = (SecondaryController) loader.getController();
-        System.out.println(controller);
-        Stage stage = new Stage();
-        scene2 = new Scene(root, 750, 800);
-        stage.setScene(scene2);
+        
+        this.newScene();
+
         stage.show();
         
         //trabalho do carregador start
