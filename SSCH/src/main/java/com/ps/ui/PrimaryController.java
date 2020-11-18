@@ -1,5 +1,6 @@
 package com.ps.ui;
 
+import com.ps.executor.Instruction;
 import com.ps.executor.VM;
 import com.ps.montador.Montador;
 
@@ -11,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.RadioButton;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
@@ -21,114 +24,195 @@ import java.util.ResourceBundle;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
+import static java.lang.Short.parseShort;
 
-/**
- * FXML Controller class
- *
- * @author Ari Vitor
- */
+
 public class PrimaryController implements Initializable {
 
+    //Variaveis de abertura de Scenes
     public static Scene scene2;
+    private Stage stage;
+    //Variaveis de instancia de classes
     public Montador montador = new Montador();
     private SecondaryController controller;
     private VM vm = VM.getInstance();
+    //Variaveis auxiliares
     private Boolean fileChoser = false;
-    private Boolean executeAll = false;
-    private Boolean executeSTEP = false;
-    private int stack_base = 20;
+    //private Boolean executeAll = false;
+    //private Boolean executeSTEP = false;
+    private Boolean newProgram = true;
+    private short stack_base = 2;
+    private String textIntegrated; 
+    private Boolean stope = false;
+    private Boolean sceneOpen = false;
+    private Boolean changepilha = true;
 
+    //Variaveis FXML
     @FXML
     private ToggleGroup fileSelect;
+    @FXML
     private ToggleGroup stackSelect;
+    @FXML
     private File selectedFile;
+    @FXML
     private TextArea integratedFile;
+    @FXML
     private TextField stackField;
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private RadioButton integrated;
+    @FXML
+    private RadioButton other;
+
+
+    //Função de inicialização da Scene atual
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        stackField.setVisible(false);
+        //String aux = String.valueOf(stack_base);
+        //stackField.setText(aux);
+    } 
     
+    //Função de Criação de nova scene
+    private void newScene() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+        Parent root = (Parent) loader.load();
+        controller = (SecondaryController) loader.getController();
+        System.out.println(controller);
+        stage = new Stage();
+        scene2 = new Scene(root, 750, 800);
+        stage.setScene(scene2);
+    }
+
+    //Funções que chamam execução 
+    //Funções de execução completa
     @FXML
     private void executeAll() throws IOException {          
-        //montador.main(selectedFile , vm.stack_base, fileChoser); 
-        if(!executeSTEP) { 
-            executeAll = true;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-            Parent root = (Parent) loader.load();
-            controller = (SecondaryController) loader.getController();
-            System.out.println(controller);
-            Stage stage = new Stage();
-            scene2 = new Scene(root, 750, 800);
-            stage.setScene(scene2);
+        if(newProgram){
+            //montador.main(selectedFile , vm.stack_base, fileChoser); 
+            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
+            //executeAll = true;
+            //trabalho do carregador start
+            if(changepilha){
+                stack_base += 2;
+                changepilha = false;
+            }
+            vm.memory[2] = stack_base;
+            vm.regs.pc = stack_base;
+            //end
+            newProgram = false;
+        }      
+            
+        this.executingAll();
+            
+        if(!sceneOpen){
+            this.newScene();
             stage.show();
-        
-            controller.inicializaNaTabelaMem();
-        }
+            sceneOpen = true;
+        }    
+            
+        controller.inicializaNaTabelaMem();
         
     }
+    
+    private void executingAll(){
+        while(!vm.step().instruction.isSTOP()) {
+            System.out.println("Ran instruction");
+            stope = true;
+        }
+        System.out.println("Stopped");
+    }
 
+    //Funções para StepByStep
     @FXML
     private void executeSTEP(ActionEvent event) throws IOException {
-        if (!executeAll){
-            executeSTEP = true;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-            Parent root = (Parent) loader.load();
-            controller = (SecondaryController) loader.getController();
-            System.out.println(controller);
-            Stage stage = new Stage();
-            scene2 = new Scene(root, 750, 800);
-            stage.setScene(scene2);
-            stage.show();
-        
-            nextStep();
-        }
+        System.out.println(stope);
+            this.executeStep();
     }
-
-    private void nextStep(){
-        vm.step();
-        controller.inicializaNaTabelaMem();
+    
+    private void executeStep() throws IOException{
+        if(newProgram){
+            //montador.main(selectedFile , vm.stack_base, fileChoser); 
+            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
+            //executeAll = true;
+            //trabalho do carregador start
+            if(changepilha){
+                stack_base += 2;
+                changepilha = false;
+            }
+            vm.memory[2] = stack_base;
+            vm.regs.pc = stack_base;
+            //end
+            newProgram = false;
+        }
+        
+        if(!sceneOpen){
+            this.newScene();
+            stage.show();
+            sceneOpen = true;
+        }
+        
+        
+        this.nextStep();
     }
     
     @FXML
     private void stepbyStep(ActionEvent event) {
-        if (!executeAll && executeSTEP){
-            nextStep();
-        }
-
+        System.out.println(stope);
+            if(vm.step().instruction.isSTOP() || stope == true){
+                stope = true;
+            }else nextStep();
+    }
+    
+    private void nextStep(){
+        vm.step();
+        controller.inicializaNaTabelaMem();
     }
 
+    //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) {
-        //Chama o montador outra vez e recarrega a memoria com os valores originais do programa
-    }
-    
-    private void defaultStack(ActionEvent event) {
-        stack_base = 20;
-        stackField.setVisible(false);
-    }
-    
-    private void otherStack(ActionEvent event) {
-        //mostrar a entrada para setar outro tamanho
-        stackField.setVisible(true);
-    }
-    
-    private void textChange(ActionEvent event) {
-        //quando o texto mudar, att a variavel
-        stack_base = parseInt(stackField.getText());
+        //Chama o montador outra vez e recarrega a memoria com os valores originais do programa e fecha e atualiza a janela 2
+        //Só pra teste
+        vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
+        vm.memory[2] = stack_base;
+        vm.regs.pc = stack_base;
+        stope = false;
+        controller.inicializaNaTabelaMem();
     }
 
-
+    //Funções do FXML dados
+    //Funções referentes ao tamanho da pilha
     @FXML
-    private void thisFile(ActionEvent event) {
-        fileChoser = false;
+    private void defaultStack(ActionEvent event) {
+        stackField.setVisible(false);
+        newProgram = true;
+        changepilha = true;
+        stack_base = 2;
+    }
+    
+    @FXML
+    private void otherStack(ActionEvent event) {
+        stackField.setVisible(true);
+        newProgram = true;
+        changepilha = true;
+        //stack_base = Short.valueOf(stackField.getText());
+    }
+    
+    @FXML
+    private void textChange(InputMethodEvent event) {
+         //enter atualiza a variavel
+        stack_base = (short) parseInt(stackField.getText());
     }
 
+    public int getStack(){
+        return stack_base;
+    }
+    
+    //Funções referentes a entrada do programa
+    //Função para pegar programa de arquivo externo
     @FXML
     private void loadFile(ActionEvent event) {
+        newProgram = true;
         fileChoser = true;
         FileChooser fc = new FileChooser();
         fc.setTitle("Arquivo de Entrada");
@@ -139,18 +223,18 @@ public class PrimaryController implements Initializable {
         //short[] variavel recebe montador(selectedFiel);
         
     }
-
+    //Função para pegar programa digitado internamente na UI
     @FXML
-    private String getTextArea(KeyEvent event) {
-        return integratedFile.getText();
+    private void getTextArea(InputMethodEvent event) {
+        newProgram = true;
+        textIntegrated = integratedFile.getText();
     }
+    
+    @FXML
+    private void thisFile(ActionEvent event) {
+        newProgram = true;
+        fileChoser = false;
+    }
+    
 
-    static void setRoot(String fxml) throws IOException {
-        scene2.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
 }
