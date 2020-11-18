@@ -38,15 +38,14 @@ public class PrimaryController implements Initializable {
     private VM vm = VM.getInstance();
     //Variaveis auxiliares
     private Boolean fileChoser = false;
-    //private Boolean executeAll = false;
-    //private Boolean executeSTEP = false;
     private Boolean newProgram = true;
-    private short stack_base = 2;
-    private String textIntegrated; 
     private Boolean stope = false;
     private Boolean sceneOpen = false;
     private Boolean changepilha = true;
 
+    private String textIntegrated; 
+    private short stack_base = 2;
+    
     //Variaveis FXML
     @FXML
     private ToggleGroup fileSelect;
@@ -68,6 +67,8 @@ public class PrimaryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         stackField.setVisible(false);
+        //if(integrated.isSelected()){ this.getTextArea();}
+        //else if(other.isSelected()){}
         //String aux = String.valueOf(stack_base);
         //stackField.setText(aux);
     } 
@@ -86,7 +87,8 @@ public class PrimaryController implements Initializable {
     //Funções que chamam execução 
     //Funções de execução completa
     @FXML
-    private void executeAll() throws IOException {          
+    private void executeAll() throws IOException {    
+        //this.getTextArea();
         if(newProgram){
             //montador.main(selectedFile , vm.stack_base, fileChoser); 
             vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
@@ -125,6 +127,7 @@ public class PrimaryController implements Initializable {
     //Funções para StepByStep
     @FXML
     private void executeSTEP(ActionEvent event) throws IOException {
+        //this.getTextArea();
         System.out.println(stope);
             this.executeStep();
     }
@@ -208,6 +211,12 @@ public class PrimaryController implements Initializable {
         return stack_base;
     }
     
+    @FXML
+    private void thisFile(ActionEvent event) {
+        newProgram = true;
+        fileChoser = false;
+    }
+    
     //Funções referentes a entrada do programa
     //Função para pegar programa de arquivo externo
     @FXML
@@ -224,17 +233,12 @@ public class PrimaryController implements Initializable {
         
     }
     //Função para pegar programa digitado internamente na UI
+ 
     @FXML
-    private void getTextArea(InputMethodEvent event) {
+    private void getTextArea() {
         newProgram = true;
         textIntegrated = integratedFile.getText();
+        System.out.println(textIntegrated);
     }
-    
-    @FXML
-    private void thisFile(ActionEvent event) {
-        newProgram = true;
-        fileChoser = false;
-    }
-    
 
 }
