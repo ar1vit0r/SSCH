@@ -70,7 +70,7 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton layoutX="106.0" layoutY="82.0" mnemonicParsing="false" onAction="#otherStack" text="Selecionar" textFill="DARKORANGE" toggleGroup="$stackSelect" />
-                  <TextField fx:id="stackField" layoutX="191.0" layoutY="78.0" onInputMethodTextChanged="#textChange" opacity="0.8" prefHeight="25.0" prefWidth="54.0" text="2" />
+                  <TextField fx:id="stackField" layoutX="191.0" layoutY="78.0" onKeyReleased="#textChange" opacity="0.8" prefHeight="25.0" prefWidth="54.0" text="2" />
                </children>
             </Pane>
             <Label layoutX="59.0" layoutY="-17.0" prefHeight="32.0" prefWidth="472.0" style="-fx-font-family: Times New Roman;" text="Simulador de Sistema Computacional Hipotético" textAlignment="CENTER" textFill="DARKORANGE">
@@ -104,7 +104,7 @@
    <bottom>
       <BorderPane BorderPane.alignment="CENTER">
          <center>
-            <TextArea onInputMethodTextChanged="#getTextArea" opacity="0.8" prefHeight="523.0" prefWidth="600.0">
+            <TextArea onKeyReleased="#getTextArea" opacity="0.8" prefHeight="523.0" prefWidth="600.0">
                <font>
                   <Font name="Times New Roman" size="12.0" />
                </font></TextArea>

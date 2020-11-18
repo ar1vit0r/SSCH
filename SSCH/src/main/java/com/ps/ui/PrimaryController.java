@@ -43,8 +43,8 @@ public class PrimaryController implements Initializable {
     private Boolean sceneOpen = false;
     private Boolean changepilha = true;
 
-    private String textIntegrated; 
-    private short stack_base = 2;
+    private String textIntegrated = new String(); 
+    private static short stack_base = 2;
     
     //Variaveis FXML
     @FXML
@@ -98,6 +98,7 @@ public class PrimaryController implements Initializable {
                 stack_base += 2;
                 changepilha = false;
             }
+            System.out.println(stack_base);
             vm.memory[2] = stack_base;
             vm.regs.pc = stack_base;
             //end
@@ -142,6 +143,7 @@ public class PrimaryController implements Initializable {
                 stack_base += 2;
                 changepilha = false;
             }
+            System.out.println(stack_base);
             vm.memory[2] = stack_base;
             vm.regs.pc = stack_base;
             //end
@@ -191,6 +193,7 @@ public class PrimaryController implements Initializable {
         newProgram = true;
         changepilha = true;
         stack_base = 2;
+        System.out.println(stack_base);
     }
     
     @FXML
@@ -202,9 +205,12 @@ public class PrimaryController implements Initializable {
     }
     
     @FXML
-    private void textChange(InputMethodEvent event) {
+    private void textChange(KeyEvent event) {
          //enter atualiza a variavel
-        stack_base = (short) parseInt(stackField.getText());
+        stack_base = (short) parseInt("0" + stackField.getText());
+        System.out.println(stack_base);
+        newProgram = true;
+        changepilha = true;
     }
 
     public int getStack(){
@@ -235,7 +241,7 @@ public class PrimaryController implements Initializable {
     //Função para pegar programa digitado internamente na UI
  
     @FXML
-    private void getTextArea() {
+    private void getTextArea(KeyEvent event) {
         newProgram = true;
         textIntegrated = integratedFile.getText();
         System.out.println(textIntegrated);
