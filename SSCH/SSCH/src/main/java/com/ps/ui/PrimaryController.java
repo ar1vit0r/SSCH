@@ -151,7 +151,12 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) {
-        //Chama o montador outra vez e recarrega a memoria com os valores originais do programa
+        //Chama o montador outra vez e recarrega a memoria com os valores originais do programa e fecha e atualiza a janela 2
+        //Só pra teste
+        vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
+        vm.regs.pc = (short) (stack_base + 2);
+        stope = false;
+        controller.inicializaNaTabelaMem();
     }
 
 
@@ -165,9 +170,7 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void otherStack(ActionEvent event) {
-        //mostrar a entrada para setar outro tamanho
-        
-    
+        stack_base = Short.valueOf(stackField.getText());
     }
     
     @FXML
@@ -194,7 +197,7 @@ public class PrimaryController implements Initializable {
     }
     //Função para pegar programa digitado internamente na UI
     @FXML
-    private void getTextArea(KeyEvent event) {
+    private void getTextArea(InputMethodEvent event) {
         textIntegrated = integratedFile.getText();
     }
     @FXML
