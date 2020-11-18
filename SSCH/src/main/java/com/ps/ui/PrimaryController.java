@@ -67,10 +67,6 @@ public class PrimaryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         stackField.setVisible(false);
-        //if(integrated.isSelected()){ this.getTextArea();}
-        //else if(other.isSelected()){}
-        //String aux = String.valueOf(stack_base);
-        //stackField.setText(aux);
     } 
     
     //Função de Criação de nova scene
@@ -91,11 +87,10 @@ public class PrimaryController implements Initializable {
         //this.getTextArea();
         if(newProgram){
             //montador.main(selectedFile , vm.stack_base, fileChoser); 
-            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
-            //executeAll = true;
+            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21};
             //trabalho do carregador start
             if(changepilha){
-                stack_base += 2;
+                stack_base += 3;
                 changepilha = false;
             }
             System.out.println(stack_base);
@@ -136,11 +131,11 @@ public class PrimaryController implements Initializable {
     private void executeStep() throws IOException{
         if(newProgram){
             //montador.main(selectedFile , vm.stack_base, fileChoser); 
-            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
+            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21,21,21,21,21,21};
             //executeAll = true;
             //trabalho do carregador start
             if(changepilha){
-                stack_base += 2;
+                stack_base += 3;
                 changepilha = false;
             }
             System.out.println(stack_base);
@@ -178,7 +173,11 @@ public class PrimaryController implements Initializable {
     private void resetAll(ActionEvent event) {
         //Chama o montador outra vez e recarrega a memoria com os valores originais do programa e fecha e atualiza a janela 2
         //Só pra teste
-        vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21};
+        vm.memory = new short[] {21,21,21,2,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21};
+        if(changepilha){
+            stack_base += 3;
+            changepilha = false;
+        }
         vm.memory[2] = stack_base;
         vm.regs.pc = stack_base;
         stope = false;
