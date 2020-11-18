@@ -54,7 +54,8 @@ public class PrimaryController implements Initializable {
     //Função de inicialização da Scene
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //String aux = String.valueOf(stack_base);
+        //stackField.setText(aux);
     }   
 
     //Funções que chamam execução 
@@ -201,15 +202,7 @@ public class PrimaryController implements Initializable {
         fileChoser = false;
     }
 
-    //Funções para criação de Scene(avaliar se estão sendo ou não usadas)
-    static void setRoot(String fxml) throws IOException {
-        scene2.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
+    
     
 
 }
