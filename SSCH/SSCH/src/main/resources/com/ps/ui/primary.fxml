@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ps.ui.PrimaryController">
+   <center>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="600.0">
+         <children>
+            <Pane layoutX="14.0" layoutY="20.0" prefHeight="150.0" prefWidth="265.0">
+               <children>
+                  <Button layoutX="177.0" layoutY="64.0" mnemonicParsing="false" onAction="#executeAll" prefHeight="68.0" prefWidth="74.0" text="Executar" underline="true">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font></Button>
+                  <Button layoutX="14.0" layoutY="64.0" mnemonicParsing="false" onAction="#executeSTEP" prefHeight="25.0" prefWidth="117.0" text="Passo a Passo" />
+                  <Button layoutX="14.0" layoutY="105.0" mnemonicParsing="false" onAction="#stepbyStep" prefHeight="25.0" prefWidth="54.0" text="Prox." />
+                  <Button layoutX="79.0" layoutY="105.0" mnemonicParsing="false" onAction="#resetAll" prefHeight="25.0" prefWidth="52.0" text="Reset" />
+                  <RadioButton disable="true" layoutX="144.0" layoutY="90.0" mnemonicParsing="false" />
+                  <Label layoutX="139.0" layoutY="70.0" text="Exec." textFill="DARKORANGE">
+                     <font>
+                        <Font name="Times New Roman" size="12.0" />
+                     </font></Label>
+                  <Label layoutX="9.0" layoutY="14.0" prefHeight="32.0" prefWidth="170.0" text="Controle de Execução" textFill="DARKORANGE">
+                     <font>
+                        <Font name="Lucida Console" size="12.0" />
+                     </font></Label>
+               </children>
+            </Pane>
+            <Separator layoutX="292.0" layoutY="12.0" orientation="VERTICAL" prefHeight="140.0" prefWidth="17.0" />
+            <Pane layoutX="321.0" layoutY="26.0" prefHeight="111.0" prefWidth="265.0">
+               <children>
+                  <RadioButton layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#thisFile" selected="true" text="Arquivo Integrado" textFill="DARKORANGE">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="fileSelect" />
+                     </toggleGroup>
+                     <font>
+                        <Font name="Times New Roman" size="12.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton layoutX="138.0" layoutY="30.0" mnemonicParsing="false" onAction="#loadFile" text="Carregar Arquivo" textFill="DARKORANGE" toggleGroup="$fileSelect">
+                     <font>
+                        <Font name="Times New Roman" size="12.0" />
+                     </font></RadioButton>
+                  <Label layoutX="36.0" layoutY="5.0" text="Seleção de Arquivo" textFill="DARKORANGE">
+                     <font>
+                        <Font name="Times New Roman" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="35.0" layoutY="56.0" prefHeight="18.0" prefWidth="121.0" text="Tamanho da Pilha" textFill="DARKORANGE">
+                     <font>
+                        <Font name="Times New Roman" size="15.0" />
+                     </font>
+                  </Label>
+                  <RadioButton layoutX="14.0" layoutY="82.0" mnemonicParsing="false" onAction="#defaultStack" selected="true" text="Padrão" textFill="DARKORANGE">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="stackSelect" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton layoutX="106.0" layoutY="82.0" mnemonicParsing="false" onAction="#otherStack" text="Selecionar" textFill="DARKORANGE" toggleGroup="$stackSelect" />
+                  <TextField fx:id="stackField" layoutX="191.0" layoutY="78.0" onInputMethodTextChanged="#textChange" opacity="0.8" prefHeight="25.0" prefWidth="54.0" text="20" />
+               </children>
+            </Pane>
+            <Label layoutX="59.0" layoutY="-17.0" prefHeight="32.0" prefWidth="472.0" style="-fx-font-family: Times New Roman;" text="Simulador de Sistema Computacional Hipotético" textAlignment="CENTER" textFill="DARKORANGE">
+               <font>
+                  <Font name="Lucida Console" size="20.0" />
+               </font></Label>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <MenuBar style="-fx-background-color: #ff8c00;" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Arquivo">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Fechar" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Editar">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Sobre">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <TextArea opacity="0.8" prefHeight="523.0" prefWidth="600.0">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font></TextArea>
+         </center>
+         <left>
+            <Separator orientation="VERTICAL" prefHeight="200.0" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Separator orientation="VERTICAL" prefHeight="200.0" BorderPane.alignment="CENTER" />
+         </right>
+         <bottom>
+            <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </bottom>
+         <top>
+            <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </top>
+      </BorderPane>
+   </bottom>
+   <right>
+      <Separator orientation="VERTICAL" prefHeight="200.0" BorderPane.alignment="CENTER" />
+   </right>
+   <left>
+      <Separator orientation="VERTICAL" prefHeight="200.0" BorderPane.alignment="CENTER" />
+   </left>
+</BorderPane>
