@@ -23,7 +23,7 @@ public class App extends Application {
         stage.setTitle("SSCH");
         scene = new Scene(root, 600, 750);
         stage.setScene(scene);
-        //stage.getIcons().add(new Image("/icon.png"));
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("icon.png")));
         stage.show();
     }
 
