@@ -28,6 +28,7 @@ public class SecondaryController implements Initializable{
     
     private List<EntradaTabela> listaDeEntradaPilha = new ArrayList<>();
     private ObservableList<EntradaTabela> obsEntradaPilha;
+    private short b = 0;
     
     public SecondaryController(){
     
@@ -97,7 +98,10 @@ public class SecondaryController implements Initializable{
 
     @FXML
     void setRI(VM vm) {
-        switch (vm.regs.ri) {
+        if(vm.regs.ri > 63){
+            b = 64;
+        }else{ b = 0;}
+        switch (vm.regs.ri - b) {
                 case 2:
                     regRI.setText("ADD");
                     break;

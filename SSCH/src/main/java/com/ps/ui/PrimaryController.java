@@ -83,12 +83,8 @@ public class PrimaryController implements Initializable {
     private void executeAll() throws IOException {    
         //this.getTextArea();
         if(newProgram){
-            //carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
-            //simulando saida do montador;
-            short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
-            carregador.carregaMem( m, stack_base, 512);
-            //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
-
+            carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
+            
             newProgram = false;
         }      
             
@@ -116,18 +112,13 @@ public class PrimaryController implements Initializable {
     @FXML
     private void executeSTEP(ActionEvent event) throws IOException {
         //this.getTextArea();
-        System.out.println(stope);
             this.executeStep();
     }
     
     private void executeStep() throws IOException{
         if(newProgram){
-            //carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
-            //simulando saida do montador;
-            short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
-            carregador.carregaMem( m, stack_base, 512);
-            //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
-            //end
+            carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
+            
             newProgram = false;
         }
         
@@ -146,7 +137,8 @@ public class PrimaryController implements Initializable {
         System.out.println(stope);
             if(vm.step().instruction.isSTOP() || stope == true){
                 stope = true;
-            }else nextStep();
+                controller.inicializaNaTabelaMem();
+            }else controller.inicializaNaTabelaMem();
     }
     
     private void nextStep(){
@@ -157,11 +149,8 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) throws FileNotFoundException {
-        //carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
-        //simulando saida do montador;
-        short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
-        carregador.carregaMem( m, stack_base, 512);
-        //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
+        carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
+        
         stope = false;
         this.nextStep();
         controller.inicializaNaTabelaMem();

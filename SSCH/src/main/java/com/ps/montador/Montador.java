@@ -116,14 +116,16 @@ public class Montador {
                 default:
                     String aux = code[i];
                     if(aux.startsWith("@")){
-                        if(code[i-2].equals("copy")){
-                            bin[i-2] = (short)(bin[i-2] + 64);
-                        } else bin[i-1] = (short)(bin[i-1] + 64);
+                        if((i-2)>=0) {
+                            if(code[i-2].equals("copy")){
+                                bin[i-2] = (short)(bin[i-2] + 64);
+                            } else bin[i-1] = (short)(bin[i-1] + 64);                
+                        } else bin[i-1] = (short)(bin[i-1] + 64);                
                         aux = aux.replace("@", "");
                         bin[i] = (short) Integer.parseInt(aux);
                     } else {
                         bin[i] = (short) Integer.parseInt(code[i]);
-                    }
+                 }
                 
                 break;
             }

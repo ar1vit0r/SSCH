@@ -1,0 +1,5 @@
+add @3
+add @12
+divide @5
+store @510
+stop
