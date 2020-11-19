@@ -41,37 +41,29 @@ public class Montador {
         //Vetor onde as operações são convertidas com seus respectivos numero
         short[] bin = new short[code.length];   
         //Leitura do vetor auxiliar e armazenamento do opcode de cada operação
-        for (int i = 0; i < code.length; i++) {     
+        for (int i = 0; i < code.length; i++) {  
             switch (code[i]) {
-                case "add":
                 case "ADD":
                     bin[i] = 2;
                     break;
-                case "br":
                 case "BR":
                     bin[i] = 0;
                     break;
-                case "brneg":
                 case "BRNEG":
                     bin[i] = 5;
                     break;
-                case "brpos":
                 case "BRPOS":
                     bin[i] = 1;
                     break;
-                case "brzero":
                 case "BRZERO":
                     bin[i] = 4;
                     break;
-                case "call":
                 case "CALL":
                     bin[i] = 15;
                     break;
-                case "copy":
                 case "COPY":
                     bin[i] = 13;
                     break;
-                case "divide":
                 case "DIVIDE":
                     bin[i] = 10;
                     break;
