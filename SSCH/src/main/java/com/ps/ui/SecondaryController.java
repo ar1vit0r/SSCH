@@ -97,7 +97,59 @@ public class SecondaryController implements Initializable{
 
     @FXML
     void setRI(VM vm) {
-        regRI.setText(String.valueOf(vm.regs.ri));
+        switch (vm.regs.ri) {
+                case 2:
+                    regRI.setText("ADD");
+                    break;
+                case 0:
+                    regRI.setText("BR");
+                    break;
+                case 5:
+                    regRI.setText("BRNEG");
+                    break;
+                case 1:
+                    regRI.setText("BRPOS");
+                    break;
+                case 4:
+                    regRI.setText("BRZERO");
+                    break;
+                case 15:
+                    regRI.setText("CALL");
+                    break;
+                case 13:
+                    regRI.setText("COPY");
+                    break;
+                case 10:
+                    regRI.setText("DIVIDE");
+                    break;
+                case 3:
+                    regRI.setText("LOAD");;
+                    break;
+                case 14:
+                    regRI.setText("MULT");;
+                    break;
+                case 12:
+                    regRI.setText("READ");
+                    break;
+                case 9:
+                    regRI.setText("RET");
+                    break;
+                case 11:
+                    regRI.setText("STOP");
+                    break;
+                case 7:
+                    regRI.setText("STORE");
+                    break;
+                case 6:
+                    regRI.setText("SUB");
+                    break;
+                case 8:
+                    regRI.setText("WRITE");
+                    break;
+                default:
+                    regRI.setText(" ");
+                    break;
+        }
     }
 
     @FXML

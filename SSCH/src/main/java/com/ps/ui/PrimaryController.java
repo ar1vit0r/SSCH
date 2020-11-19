@@ -87,7 +87,7 @@ public class PrimaryController implements Initializable {
             //simulando saida do montador;
             short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
             vm.memory = carregador.carregaMem( m, stack_base, 512);
-            vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
+            //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
 
             newProgram = false;
         }      
@@ -126,7 +126,7 @@ public class PrimaryController implements Initializable {
             //simulando saida do montador;
             short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
             vm.memory = carregador.carregaMem( m, stack_base, 512);
-            vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
+            //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
             //end
             newProgram = false;
         }
@@ -161,7 +161,7 @@ public class PrimaryController implements Initializable {
         //simulando saida do montador;
         short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
         vm.memory = carregador.carregaMem( m, stack_base, 512);
-        vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
+        //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
         stope = false;
         controller.inicializaNaTabelaMem();
     }

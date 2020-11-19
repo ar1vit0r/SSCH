@@ -5,17 +5,21 @@
  */
 package com.ps.carregador;
 
+import com.ps.executor.VM;
+
 /**
  *
  * @author gabriel
  */
 public class Carregador {
+
+    private VM vm = VM.getInstance();
     
     
     public short[] carregaMem( short[] instructions, int stackSize, int memSize ){
         short[] mem = new short[memSize];
         //Começa iniciando os valores da mem
-        mem[0] = 0;
+        mem[0] = -1;
         //mem[1] se torna a op "br"
         mem[1] = 0;
         //mem[2] possui o tamanho da pilha + 3 para pular direto para as instruções
@@ -49,7 +53,8 @@ public class Carregador {
             }
         }
         
-        
+        vm.regs.pc = 1;
+        vm.memory = mem;
         return mem;
     }
     
