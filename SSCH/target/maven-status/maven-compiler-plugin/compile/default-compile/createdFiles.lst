@@ -18,6 +18,7 @@ com\ps\ui\App.class
 com\ps\executor\InstructionAction$9.class
 com\ps\executor\InstructionAction$14.class
 com\ps\executor\InstructionAction$Interface.class
+com\ps\carregador\Carregador.class
 com\ps\executor\InstructionAction.class
 com\ps\models\EntradaTabela.class
 com\ps\ui\SecondaryController.class

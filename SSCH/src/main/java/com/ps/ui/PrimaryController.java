@@ -1,5 +1,6 @@
 package com.ps.ui;
 
+import com.ps.carregador.Carregador;
 import com.ps.executor.Instruction;
 import com.ps.executor.VM;
 import com.ps.montador.Montador;
@@ -33,6 +34,7 @@ public class PrimaryController implements Initializable {
     public Montador montador = new Montador();
     private SecondaryController controller;
     private VM vm = VM.getInstance();
+    private Carregador carregador = new Carregador();
     //Variaveis auxiliares
     private Boolean fileChoser = false;
     private Boolean newProgram = true;
@@ -82,16 +84,11 @@ public class PrimaryController implements Initializable {
         //this.getTextArea();
         if(newProgram){
             //montador.main(selectedFile , vm.stack_base, fileChoser); 
-            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21};
-            //trabalho do carregador start
-            if(changepilha){
-                stack_base += 3;
-                changepilha = false;
-            }
-            System.out.println(stack_base);
-            vm.memory[2] = stack_base;
-            vm.regs.pc = stack_base;
-            //end
+            //simulando saida do montador;
+            short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
+            vm.memory = carregador.carregaMem( m, stack_base, 512);
+            vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
+
             newProgram = false;
         }      
             
@@ -126,16 +123,10 @@ public class PrimaryController implements Initializable {
     private void executeStep() throws IOException{
         if(newProgram){
             //montador.main(selectedFile , vm.stack_base, fileChoser); 
-            vm.memory = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21,21,21,21,21,21};
-            //executeAll = true;
-            //trabalho do carregador start
-            if(changepilha){
-                stack_base += 3;
-                changepilha = false;
-            }
-            System.out.println(stack_base);
-            vm.memory[2] = stack_base;
-            vm.regs.pc = stack_base;
+            //simulando saida do montador;
+            short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
+            vm.memory = carregador.carregaMem( m, stack_base, 512);
+            vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
             //end
             newProgram = false;
         }
@@ -166,15 +157,11 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) {
-        //Chama o montador outra vez e recarrega a memoria com os valores originais do programa e fecha e atualiza a janela 2
-        //Só pra teste
-        vm.memory = new short[] {21,21,21,2,21,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21};
-        if(changepilha){
-            stack_base += 3;
-            changepilha = false;
-        }
-        vm.memory[2] = stack_base;
-        vm.regs.pc = stack_base;
+        //montador.main(selectedFile , vm.stack_base, fileChoser); 
+        //simulando saida do montador;
+        short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
+        vm.memory = carregador.carregaMem( m, stack_base, 512);
+        vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
         stope = false;
         controller.inicializaNaTabelaMem();
     }
