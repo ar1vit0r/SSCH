@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 
@@ -69,7 +70,6 @@ public class PrimaryController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
         Parent root = (Parent) loader.load();
         controller = (SecondaryController) loader.getController();
-        System.out.println(controller);
         stage = new Stage();
         scene2 = new Scene(root, 750, 800);
         stage.setScene(scene2);
@@ -83,10 +83,10 @@ public class PrimaryController implements Initializable {
     private void executeAll() throws IOException {    
         //this.getTextArea();
         if(newProgram){
-            //montador.main(selectedFile , vm.stack_base, fileChoser); 
+            //carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
             //simulando saida do montador;
             short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
-            vm.memory = carregador.carregaMem( m, stack_base, 512);
+            carregador.carregaMem( m, stack_base, 512);
             //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
 
             newProgram = false;
@@ -122,10 +122,10 @@ public class PrimaryController implements Initializable {
     
     private void executeStep() throws IOException{
         if(newProgram){
-            //montador.main(selectedFile , vm.stack_base, fileChoser); 
+            //carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
             //simulando saida do montador;
             short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
-            vm.memory = carregador.carregaMem( m, stack_base, 512);
+            carregador.carregaMem( m, stack_base, 512);
             //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
             //end
             newProgram = false;
@@ -156,13 +156,14 @@ public class PrimaryController implements Initializable {
 
     //Funções para migrar entre maneiras de execução
     @FXML
-    private void resetAll(ActionEvent event) {
-        //montador.main(selectedFile , vm.stack_base, fileChoser); 
+    private void resetAll(ActionEvent event) throws FileNotFoundException {
+        //carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
         //simulando saida do montador;
         short [] m = new short[] {21,21,21,22,21,21,21,21,21,21,21,21,21,21,(short)Instruction.STOP.opcode,21,21,21,21,21,21,21,21};
-        vm.memory = carregador.carregaMem( m, stack_base, 512);
+        carregador.carregaMem( m, stack_base, 512);
         //vm.regs.pc = 1; //temos que ver como resolver pra não precisarmos usar isso
         stope = false;
+        this.nextStep();
         controller.inicializaNaTabelaMem();
     }
 

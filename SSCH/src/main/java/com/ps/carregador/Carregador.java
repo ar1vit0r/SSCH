@@ -16,10 +16,10 @@ public class Carregador {
     private VM vm = VM.getInstance();
     
     
-    public short[] carregaMem( short[] instructions, int stackSize, int memSize ){
+    public void carregaMem( short[] instructions, int stackSize, int memSize ){
         short[] mem = new short[memSize];
         //Começa iniciando os valores da mem
-        mem[0] = -1;
+        mem[0] = 0;
         //mem[1] se torna a op "br"
         mem[1] = 0;
         //mem[2] possui o tamanho da pilha + 3 para pular direto para as instruções
@@ -55,12 +55,11 @@ public class Carregador {
         
         vm.regs.pc = 1;
         vm.memory = mem;
-        return mem;
+        
     }
     
     public static boolean isImediate ( short instruction ){
         int bit7 = (instruction & 0b0100_0000) >>> 6;
-        System.out.println(bit7);
         return bit7 == 1;
     }
     
