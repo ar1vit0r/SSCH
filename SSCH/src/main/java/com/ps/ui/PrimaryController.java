@@ -39,17 +39,16 @@ public class PrimaryController implements Initializable {
     private SecondaryController controller;
     private VM vm = VM.getInstance();
     private Carregador carregador = new Carregador();
-    //Variaveis auxiliares
-    private Boolean fileChoser = false;
-    private Boolean newProgram = true;
-    private Boolean stope = false;
-    private Boolean sceneOpen = false;
-    private Boolean changepilha = true;
-
-    private String textIntegrated = new String(""); 
+    private String textIntegrated = null; 
     private String selectedFileEnd = new String("");
-    private static short stack_base = 2;
     private Alert alert = new Alert(AlertType.ERROR);
+    //Variaveis auxiliares
+    private Boolean fileChoser = false; // true caso esteja carregando um arquivo externo
+    private Boolean newProgram = true; //false se o programa ja esta aberto.
+    private Boolean stope = false; //true quando termina a execução
+    private Boolean sceneOpen = false; //true se a tela secundaria ja estiver aberta
+    
+    private static short stack_base = 2;
     
     //Variaveis FXML
     @FXML
@@ -62,7 +61,6 @@ public class PrimaryController implements Initializable {
     private TextArea integratedFile;
     @FXML
     private TextField stackField;
-
 
     //Função de inicialização da Scene atual
     @Override
@@ -170,7 +168,6 @@ public class PrimaryController implements Initializable {
     private void defaultStack(ActionEvent event) {
         stackField.setVisible(false);
         newProgram = true;
-        changepilha = true;
         stack_base = 2;
         System.out.println(stack_base);
     }
@@ -179,7 +176,6 @@ public class PrimaryController implements Initializable {
     private void otherStack(ActionEvent event) {
         stackField.setVisible(true);
         newProgram = true;
-        changepilha = true;
         //stack_base = Short.valueOf(stackField.getText());
     }
     
@@ -189,11 +185,6 @@ public class PrimaryController implements Initializable {
         stack_base = (short) parseInt("0" + stackField.getText());
         System.out.println(stack_base);
         newProgram = true;
-        changepilha = true;
-    }
-
-    public int getStack(){
-        return stack_base;
     }
     
     @FXML
@@ -224,7 +215,5 @@ public class PrimaryController implements Initializable {
         textIntegrated = integratedFile.getText();
         newProgram = true;
     }
-
-
     
 }
