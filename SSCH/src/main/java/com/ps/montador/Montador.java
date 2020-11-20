@@ -1,4 +1,4 @@
-package com.ps.montador;
+package montador;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,13 +23,22 @@ public class Montador {
         //Tratamento de exceção para leitura do arquivo e teste para verificar se o arquivo está vazio.
             File textfile = new File(diretorio);
             Scanner reader = new Scanner(textfile);
+            
+
             while(reader.hasNextLine()){
-                String[] aux = reader.nextLine().split(" ");
-                // PQ ESSE IF???
+                
+                String trololo = reader.nextLine();
+                String[] fenriz = trololo.split("//");
+                String[] aux = fenriz[0].split(" ");
+                
                 if(aux[0].equals("const")){
                     aux = new String[]{aux[1]};
                 }
-                data.addAll(Arrays.asList(aux));
+                
+                //Verifica se é uma linha vazia
+                if(!aux[0].isEmpty()){
+                    data.addAll(Arrays.asList(aux));
+                }
             }
         } else {
             String[] aux = texto.split("\n");
@@ -41,6 +50,7 @@ public class Montador {
                 data.addAll(Arrays.asList(aux2));
             }
         }
+
         //Tratamento das LABEL
         //Procura no código as Label
         //Quando as encontra, coloca na tabela de Simbolos com a posição
@@ -49,12 +59,15 @@ public class Montador {
         List<String> aux_data = new ArrayList<>();
         int index_label = 0;
         for (String iterator : data){
+            
             char doisPontos = iterator.charAt(iterator.length()-1);
+            //Tratamento de LABELS
             if (doisPontos == ':') {
                 iterator = iterator.replace(":", "");
                 iterator = iterator.toUpperCase();
                 tabelaDeSimbolos.put(iterator, index_label);
             }
+            
             else {
                 aux_data.add(iterator);
             }
