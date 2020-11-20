@@ -1,4 +1,4 @@
-package montador;
+package com.ps.montador;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,16 +34,10 @@ public class Montador {
                 String[] aux = fenriz[0].split(" ");
                 
                 if(aux[0].equals("CONST") || aux[0].equals("const")){
-                    wasConst = true;
                     aux = new String[]{aux[1]};
-                    dontTouch.add(pc);
-                    pc = pc + 1;
                 } else if(aux.length>1){
                     if (aux[1].equals("CONST") || aux[1].equals("const")){
-                        wasConst = true;
                         aux = new String[]{aux[0],aux[2]};
-                        dontTouch.add(pc);
-                        pc = pc + 1;
                     }
                 }
                 
@@ -70,7 +64,7 @@ public class Montador {
             for(int i = 0; i < aux.length; i++) {
                 String[] fenriz = aux[i].split("//");
                 String[] aux2 = fenriz[0].split(" ");
-                if(aux2[0].equals("const")){
+                if(aux2[0].equals("const") || aux[0].equals("CONST")){
                     aux2 = new String[]{aux2[1]};
                 }
                 data.addAll(Arrays.asList(aux2));

@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
@@ -48,7 +49,7 @@ public class PrimaryController implements Initializable {
     private Boolean stope = false; //true quando termina a execução
     private Boolean sceneOpen = false; //true se a tela secundaria ja estiver aberta
     
-    private static short stack_base = 2;
+    private static short stack_base = 12;
     
     //Variaveis FXML
     @FXML
@@ -61,10 +62,13 @@ public class PrimaryController implements Initializable {
     private TextArea integratedFile;
     @FXML
     private TextField stackField;
+    @FXML
+    private RadioButton isexecutingnow;
 
     //Função de inicialização da Scene atual
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        isexecutingnow.setDisable(true);
         stackField.setVisible(false);
         alert.setTitle("Erro");
         alert.setHeaderText("Erro de entrada");
@@ -88,6 +92,9 @@ public class PrimaryController implements Initializable {
     @FXML
     private void executeAll() throws IOException {    
         if(textIntegrated != null || selectedFile != null){
+            isexecutingnow.setDisable(false);
+            isexecutingnow.setSelected(true);
+            isexecutingnow.setDisable(true);
             if(newProgram){
                 carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
                 newProgram = false;
@@ -121,6 +128,9 @@ public class PrimaryController implements Initializable {
     
     private void executeStep() throws IOException{
         if(textIntegrated != null || selectedFile != null){
+            isexecutingnow.setDisable(false);
+            isexecutingnow.setSelected(true);
+            isexecutingnow.setDisable(true);
             if(newProgram){
                 carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
                 newProgram = false;
@@ -139,6 +149,9 @@ public class PrimaryController implements Initializable {
     @FXML
     private void stepbyStep(ActionEvent event) {
         if(textIntegrated != null || selectedFile != null){
+            isexecutingnow.setDisable(false);
+            isexecutingnow.setSelected(true);
+            isexecutingnow.setDisable(true);
             if(vm.step().instruction.isSTOP() || stope == true){
                 stope = true;
                 controller.inicializaNaTabelaMem();
@@ -155,6 +168,9 @@ public class PrimaryController implements Initializable {
     @FXML
     private void resetAll(ActionEvent event) throws FileNotFoundException {
         if(textIntegrated != null || selectedFile != null){
+            isexecutingnow.setDisable(false);
+            isexecutingnow.setSelected(false);
+            isexecutingnow.setDisable(true);
             carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
             stope = false;
             this.nextStep();
