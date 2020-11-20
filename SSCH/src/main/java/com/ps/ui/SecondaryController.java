@@ -20,88 +20,80 @@ import javafx.collections.ObservableList;
 
 public class SecondaryController implements Initializable{
     
+    //Variaveis de Classes
+    private static SecondaryController controller = new SecondaryController(); //Criação da instancia, singleton
+    private VM memoria = VM.getInstance(); // Chamando a instancia via metodo 
     
-    private static SecondaryController controller = new SecondaryController();
-    private VM memoria = VM.getInstance();
-    private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>();
-    private ObservableList<EntradaTabela> obsEntradaTabela;
+    //Variaveis auxiliares
+    private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>(); // Lista dos valores para as tabela de memoria
+    private ObservableList<EntradaTabela> obsEntradaTabela; //Tipo padão necessario para colocar nas tabelas FXML
+    private List<EntradaTabela> listaDeEntradaPilha = new ArrayList<>(); // Lista dos valores para a tabela de pilha
+    private ObservableList<EntradaTabela> obsEntradaPilha; //Tipo padão necessario para colocar nas tabelas FXML
+    private short b = 0; //identifica se o bit 6 foi alterado;
     
-    private List<EntradaTabela> listaDeEntradaPilha = new ArrayList<>();
-    private ObservableList<EntradaTabela> obsEntradaPilha;
-    private short b = 0;
-    
+    //Variaveis FXML
+    @FXML
+    private TableView< EntradaTabela > tbMemoriaGeral; //Tabela da memoria geral
+    @FXML
+    private TableColumn<EntradaTabela, Integer> tbEnderecoMemoriaUm; // Coluna de endereços da tabela de memoria
+    @FXML
+    private TableColumn<EntradaTabela, Short> tbDadoMemoriaUm; // Coluna de dados da tabela de memoria;
+    @FXML
+    private TextField regPC;
+    @FXML
+    private TextField regSP;
+    @FXML
+    private TextField regMOP;
+    @FXML
+    private TextField regRI;
+    @FXML
+    private TextField regRE;
+    @FXML
+    private TextField regACC;
+    @FXML
+    private TableView<EntradaTabela> tbPilhaGeral; //Tabela da pilha geral
+    @FXML
+    private TableColumn<EntradaTabela, Integer> tbOrdemPilha; // Coluna da ordem da tabela de pilha
+    @FXML
+    private TableColumn<EntradaTabela, Short> tbDadosPilha; // Coluna de dados da tabela de pilha
+
     public SecondaryController(){
     
     }
     
+    //Função de inicialização da scene
     @Override
     public void initialize (URL location, ResourceBundle resources) {
-       // memoria.memory = new short[] {1,1,1,2,1,(short)Instruction.STOP.opcode};
-        
     }
     
+    
+    //Função para mostrar o valor do ACC na scene
     @FXML
-    private TableView< EntradaTabela > tbMemoriaGeral;
-
-    @FXML
-    private TableColumn<EntradaTabela, Integer> tbEnderecoMemoriaUm;
-
-    @FXML
-    private TableColumn<EntradaTabela, Short> tbDadoMemoriaUm;
-
-    @FXML
-    private TextField regPC;
-
-    @FXML
-    private TextField regSP;
-
-    @FXML
-    private TextField regMOP;
-
-    @FXML
-    private TextField regRI;
-
-    @FXML
-    private TextField regRE;
-
-    @FXML
-    private TextField regACC;
-
-    @FXML
-    private TableView<EntradaTabela> tbPilhaGeral;
-
-    @FXML
-    private TableColumn<EntradaTabela, Integer> tbOrdemPilha;
-
-    @FXML
-    private TableColumn<EntradaTabela, Short> tbDadosPilha;
-
-    @FXML
-    void setACC(VM vm) {
-        regACC.setText(String.valueOf(vm.regs.acc));
+    void setACC() {
+        regACC.setText(String.valueOf(memoria.regs.acc));
     }   
-
+    //Função para mostrar o valor do MOP na scene
     @FXML
-    void setMOP(VM vm) {
-        regMOP.setText(String.valueOf(vm.regs.re_mode));
+    void setMOP() {
+        regMOP.setText(String.valueOf(memoria.regs.re_mode));
     }
-
+    //Função para mostrar o valor do PC na scene
     @FXML
-    void setPC(VM vm) {
-        regPC.setText(String.valueOf(vm.regs.pc));
+    void setPC() {
+        regPC.setText(String.valueOf(memoria.regs.pc));
     }
-
+    //Função para mostrar o valor do RE na scene
     @FXML
-    void setRE(VM vm) {
-        regRE.setText(String.valueOf(vm.regs.re));
+    void setRE() {
+        regRE.setText(String.valueOf(memoria.regs.re));
     }
-
+    //Função para mostrar o valor do RI na scene
     @FXML
-    void setRI(VM vm) {
-        if(vm.regs.ri > 63){
+    void setRI() {
+        if(memoria.regs.ri > 63){ //verifica se o valor do opcode esta com o bit 6 alterado
             b = 64;
         }else{ b = 0;}
-        switch (vm.regs.ri - b) {
+        switch (memoria.regs.ri - b) { //Caso o opcode esteja com o bit alterado ele diminui esse valor para a verificação e mostrar qual a instruçãoa tual
                 case 2:
                     regRI.setText("ADD");
                     break;
@@ -151,47 +143,54 @@ public class SecondaryController implements Initializable{
                     regRI.setText("WRITE");
                     break;
                 default:
-                    regRI.setText(" ");
+                    regRI.setText(String.valueOf(memoria.regs.ri));
                     break;
         }
     }
-
+    //Função para mostrar o valor do SP na scene
     @FXML
-    void setSP(VM vm) {
-        regSP.setText(String.valueOf(vm.regs.sp));
+    void setSP() {
+        regSP.setText(String.valueOf(memoria.regs.sp));
     }
-    
-     @FXML
+    //Função para inicializar os valores das tabelas na scene
+    @FXML
     public void inicializaNaTabelaMem() {
-         System.out.println("Entrou");
-        this.setPC(memoria);
-        this.setSP(memoria);
-        this.setACC(memoria);
-        this.setRE(memoria);
-        this.setRI(memoria);
-        this.setMOP(memoria);
+        //Chama as funções para alterar os valores dos registradores
+        this.setPC();
+        this.setSP();
+        this.setACC();
+        this.setRE();
+        this.setRI();
+        this.setMOP();
         
+        //Seta quais campos da classe EntradaTabela vão ser utilizados
         tbEnderecoMemoriaUm.setCellValueFactory(new PropertyValueFactory<>("endereco"));
         tbDadoMemoriaUm.setCellValueFactory(new PropertyValueFactory<>("memory"));
         
-        tbMemoriaGeral.setItems(listaDeTabela());
+        //Seta os itens para a tabela
+        tbMemoriaGeral.setItems(listaDeTabela());// Retorna o setItems do retorno do metodo listaDeTabela
     }
 
     private ObservableList<EntradaTabela> listaDeTabela(){
+        //No caso de uma atualização, limpa as tabelas atuais
         listaDeEntradaTabela.clear();
         listaDeEntradaPilha.clear();
+        //For par aler cada valor das listas
           for(int i=0; i<memoria.memory.length;i++){
+            //Instancia um novo EntradaTabela com a s informações necessarias
             EntradaTabela entrada = new EntradaTabela( i, memoria.memory[i]);
-            listaDeEntradaTabela.add(entrada);
-            if(i>2 && i<(memoria.memory[memoria.stack_base])){
-                enchePilha(entrada);
+            listaDeEntradaTabela.add(entrada); // Adiciona a nova instancio a AbservableList da memória
+            if(i>2 && i<(memoria.memory[memoria.stack_base])){ //Separa os valores que vão entrar para a pilha
+                enchePilha(entrada); //Chama o metodo similar a este que enche os valores da pilah
             }
             
         }
-        return FXCollections.observableArrayList(listaDeEntradaTabela);
+        return FXCollections.observableArrayList(listaDeEntradaTabela); //retorna a lista completa da memoria
     }
     
+    //Prepara a ObservableList e da o seItems  da pilha
     private void enchePilha(EntradaTabela entrada){
+        
         tbOrdemPilha.setCellValueFactory(new PropertyValueFactory<>("enderecoP"));
         tbDadosPilha.setCellValueFactory(new PropertyValueFactory<>("memory"));
         listaDeEntradaPilha.add(entrada);
@@ -200,14 +199,15 @@ public class SecondaryController implements Initializable{
         
     }
     
+    //get da lista de entrada tabela
     public List<EntradaTabela> getListaDeEntradaTabela() {
         return listaDeEntradaTabela;
     }
-
+    //get da TableView da memoriaGEral
     public TableView<EntradaTabela> getTbMemoriaGeral() {
         return tbMemoriaGeral;
     }
-    
+    //Metodo get Instance do SecondaryController
     public static synchronized SecondaryController getInstance(){
         return controller;
     }
