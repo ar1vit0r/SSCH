@@ -43,7 +43,8 @@ public class Montador {
         } else {
             String[] aux = texto.split("\n");
             for(int i = 0; i < aux.length; i++) {
-                String[] aux2 = aux[i].split(" ");
+                String[] fenriz = aux[i].split("//");
+                String[] aux2 = fenriz[0].split(" ");
                 if(aux2[0].equals("const")){
                     aux2 = new String[]{aux2[1]};
                 }
