@@ -19,12 +19,14 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.event.ActionEvent;
 
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
+import javafx.scene.input.KeyCode;
 
 public class PrimaryController implements Initializable {
 
@@ -43,7 +45,7 @@ public class PrimaryController implements Initializable {
     private Boolean sceneOpen = false;
     private Boolean changepilha = true;
 
-    private String textIntegrated = new String(); 
+    private String textIntegrated; 
     private static short stack_base = 2;
     
     //Variaveis FXML
@@ -206,16 +208,17 @@ public class PrimaryController implements Initializable {
         fc.getExtensionFilters().add(extFilter);
         fc.setInitialDirectory(new File("C:\\Users"));
         selectedFile = fc.showOpenDialog(null);
-        //short[] variavel recebe montador(selectedFiel);
         
     }
     //Função para pegar programa digitado internamente na UI
  
     @FXML
-    private void getTextArea(KeyEvent event) {
-        newProgram = true;
+    void getTextArea(KeyEvent event) {
         textIntegrated = integratedFile.getText();
         System.out.println(textIntegrated);
+        newProgram = true;
     }
 
+
+    
 }
