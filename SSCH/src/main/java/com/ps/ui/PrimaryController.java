@@ -45,7 +45,7 @@ public class PrimaryController implements Initializable {
     private Boolean sceneOpen = false;
     private Boolean changepilha = true;
 
-    private String textIntegrated = null; 
+    private String textIntegrated = new String(""); 
     private String selectedFileEnd = new String("");
     private static short stack_base = 2;
     
@@ -74,7 +74,7 @@ public class PrimaryController implements Initializable {
         Parent root = (Parent) loader.load();
         controller = (SecondaryController) loader.getController();
         stage = new Stage();
-        scene2 = new Scene(root, 750, 800);
+        scene2 = new Scene(root, 750, 815);
         stage.setScene(scene2);
         stage.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
         stage.setTitle("Execução");
@@ -209,6 +209,7 @@ public class PrimaryController implements Initializable {
         fc.setInitialDirectory(new File("C:\\Users"));
         selectedFile = fc.showOpenDialog(null);
         selectedFileEnd = selectedFile.getAbsolutePath();
+        System.out.println(selectedFileEnd);
     }
     //Função para pegar programa digitado internamente na UI
  

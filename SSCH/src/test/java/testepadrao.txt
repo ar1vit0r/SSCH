@@ -1,7 +1,6 @@
 copy 4 @3
- add @12
+add @12
 divide @5
 store 500
-
 store 230
 stop
