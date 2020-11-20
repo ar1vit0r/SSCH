@@ -1,4 +1,4 @@
-package montador;
+package com.ps.montador;
 
 import java.io.File;
 import java.io.FileNotFoundException;
