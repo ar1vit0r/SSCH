@@ -85,8 +85,13 @@ public class PrimaryController implements Initializable {
     private void executeAll() throws IOException {    
         //this.getTextArea();
         if(newProgram){
-            carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
-            
+            if(fileChoser){
+                carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
+            }else{
+                carregador.carregaMem(montador.main(textIntegrated), stack_base, 512);
+            }
+
+
             newProgram = false;
         }      
             
