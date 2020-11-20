@@ -222,7 +222,6 @@ public class PrimaryController implements Initializable {
     @FXML
     void getTextArea(KeyEvent event) {
         textIntegrated = integratedFile.getText();
-        System.out.println(textIntegrated);
         newProgram = true;
     }
 
