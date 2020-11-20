@@ -1,7 +1,7 @@
 copy 4 @3
-teste: add @12
+ add @12
 divide @5
 store 500
-br teste
+
 store 230
 stop

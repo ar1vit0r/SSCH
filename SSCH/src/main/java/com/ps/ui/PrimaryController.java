@@ -45,7 +45,8 @@ public class PrimaryController implements Initializable {
     private Boolean sceneOpen = false;
     private Boolean changepilha = true;
 
-    private String textIntegrated; 
+    private String textIntegrated = null; 
+    private String selectedFileEnd = new String("");
     private static short stack_base = 2;
     
     //Variaveis FXML
@@ -85,13 +86,7 @@ public class PrimaryController implements Initializable {
     private void executeAll() throws IOException {    
         //this.getTextArea();
         if(newProgram){
-            if(fileChoser){
-                carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
-            }else{
-                carregador.carregaMem(montador.main(textIntegrated), stack_base, 512);
-            }
-
-
+            carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
             newProgram = false;
         }      
             
@@ -124,7 +119,7 @@ public class PrimaryController implements Initializable {
     
     private void executeStep() throws IOException{
         if(newProgram){
-            carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
+            carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
             
             newProgram = false;
         }
@@ -156,7 +151,7 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) throws FileNotFoundException {
-        carregador.carregaMem( montador.main(selectedFile.getAbsolutePath()) , stack_base, 512);
+        carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
         
         stope = false;
         this.nextStep();
@@ -213,7 +208,7 @@ public class PrimaryController implements Initializable {
         fc.getExtensionFilters().add(extFilter);
         fc.setInitialDirectory(new File("C:\\Users"));
         selectedFile = fc.showOpenDialog(null);
-        
+        selectedFileEnd = selectedFile.getAbsolutePath();
     }
     //Função para pegar programa digitado internamente na UI
  

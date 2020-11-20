@@ -53,6 +53,7 @@ public class Carregador {
             }
         }
         
+        vm.regs.acc = 0;
         vm.regs.pc = 1;
         vm.memory = mem;
         

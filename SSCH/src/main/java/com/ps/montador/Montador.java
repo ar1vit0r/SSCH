@@ -13,13 +13,13 @@ import java.util.HashMap;
 
 public class Montador {
          
-    public static short[] main(String diretorio) throws FileNotFoundException{
+    public static short[] main(String diretorio, boolean flag, String texto) throws FileNotFoundException{
         //ArrayList para armazenamento do conteudo do arquivo
         List<String> data = new ArrayList<>();
         //HashMap criado para tabela de Símbolos, linkando o nome da label com o endereço
         //Exemplo: (FIM, 23)
         Map<String, Integer> tabelaDeSimbolos = new HashMap<String, Integer>();
-        
+        if(flag){
         //Tratamento de exceção para leitura do arquivo e teste para verificar se o arquivo está vazio.
             File textfile = new File(diretorio);
             Scanner reader = new Scanner(textfile);
@@ -31,21 +31,29 @@ public class Montador {
                 }
                 data.addAll(Arrays.asList(aux));
             }
-            
+        } else {
+            String[] aux = texto.split("\n");
+            for(int i = 0; i < aux.length; i++) {
+                String[] aux2 = aux[i].split(" ");
+                if(aux2[0].equals("const")){
+                    aux2 = new String[]{aux2[1]};
+                }
+                data.addAll(Arrays.asList(aux2));
+            }
+        }
         //Tratamento das LABEL
         //Procura no código as Label
         //Quando as encontra, coloca na tabela de Simbolos com a posição
         //E não passa a string para a Próxima List aux_data
+        
         List<String> aux_data = new ArrayList<>();
         int index_label = 0;
         for (String iterator : data){
-            var doisPontos = iterator.charAt(iterator.length()-1);
+            char doisPontos = iterator.charAt(iterator.length()-1);
             if (doisPontos == ':') {
                 iterator = iterator.replace(":", "");
                 iterator = iterator.toUpperCase();
                 tabelaDeSimbolos.put(iterator, index_label);
-                System.out.println("Key: " + iterator);
-                System.out.println("Result: " + tabelaDeSimbolos.get(iterator));
             }
             else {
                 aux_data.add(iterator);
@@ -129,10 +137,10 @@ public class Montador {
                     //SE NÃO FOR UMA LABE, VERIFICA SE É IMEDIATO OU DIRETO
                     else if(aux.startsWith("@")){
                         if((i-2)>=0) {
-                            if(code[i-2].equals("copy")){
+                            if(code[i-2].equals("COPY")){
                                 bin[i-2] = (short)(bin[i-2] + 64);
                             } else bin[i-1] = (short)(bin[i-1] + 64);                
-                        } else bin[i-1] = (short)(bin[i-1] + 64);                
+                        } else bin[i-1] = (short)(bin[i-1] + 64);
                         aux = aux.replace("@", "");
                         bin[i] = (short) Integer.parseInt(aux);
                     } 
