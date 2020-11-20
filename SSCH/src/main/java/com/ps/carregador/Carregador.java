@@ -6,6 +6,7 @@
 package com.ps.carregador;
 
 import com.ps.executor.VM;
+import com.ps.executor.Instruction;
 
 /**
  *
@@ -18,12 +19,12 @@ public class Carregador {
     
     public void carregaMem( short[] instructions, int stackSize, int memSize ){
         short[] mem = new short[memSize];
-        //Começa iniciando os valores da mem
-        mem[0] = 0;
-        //mem[1] se torna a op "br"
-        mem[1] = 0;
-        //mem[2] possui o tamanho da pilha + 3 para pular direto para as instruções
-        mem[2] = (short) (stackSize + 3);
+        //Começa com o opcode para "BR"
+        mem[0] = (short) Instruction.BR.opcode;
+        //mem[1]  possui o tamanho da pilha + 3 para pular direto para as instruções
+        mem[1] = (short) (stackSize + 3);;
+        //mem[2] possui o tamanho da pilha 
+        mem[2] = (short) (stackSize);
         int Opd = 0;
         for(int i = 0; i < instructions.length; i++){
             if(Opd != 0){
@@ -33,7 +34,7 @@ public class Carregador {
             } else {
                 if(isImediate(instructions[i])){
                     //Se a instrução for imediata então pula os opd para proxima instrução
-                    if(howManyOpd(instructions[i]) == 2){
+                    if(Instruction.withOpcode[instructions[i] & 0b1111].operands == 2){
                         mem[i + stackSize + 3] = instructions[i];
                         //Se a instrução for copy e imediata, o opd1 é somado o offset e o opd2 fica imediato, dps pula para a proxima instrução
                         mem[i + stackSize + 4] = (short) (instructions[i+1] + stackSize + 3);
@@ -43,18 +44,17 @@ public class Carregador {
                         mem[i + stackSize + 3] = instructions[i];
                         mem[i + stackSize + 4] = instructions[i+1];
                     }
-                    i += howManyOpd(instructions[i]);
+                    i += Instruction.withOpcode[instructions[i] & 0b1111].operands; 
                     
                 } else {
                     //Da um set se é um opd, e coloca a instrução na memoria
-                    Opd = howManyOpd(instructions[i]);
+                    Opd =  Instruction.withOpcode[instructions[i] & 0b1111].operands; 
                     mem[i + stackSize + 3] = instructions[i];
                 }
             }
         }
         
         vm.regs.acc = 0;// Quando é resetado o valor de um programa o ACC é zerado para a execução do proximo programa
-        vm.regs.pc = 1;// Inicia no BR que pula para a primeira instrução pós pilha
         vm.memory = mem;// Carrega na memoria o programa
         
     }
@@ -63,13 +63,6 @@ public class Carregador {
         int bit7 = (instruction & 0b0100_0000) >>> 6;
         return bit7 == 1;
     }
-    
-    public static short howManyOpd ( short instruction ){
-        if( instruction == 13 || instruction == 77) return 2;
-        if( instruction == 9 || instruction == 11 ) return 0;
-        return 1;
-    }
-    
     
     
 }

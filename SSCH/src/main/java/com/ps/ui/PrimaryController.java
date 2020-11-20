@@ -49,7 +49,7 @@ public class PrimaryController implements Initializable {
     private Boolean stope = false; //true quando termina a execução
     private Boolean sceneOpen = false; //true se a tela secundaria ja estiver aberta
     
-    private static short stack_base = 2;
+    private static short stack_base = 12;
     
     //Variaveis FXML
     @FXML

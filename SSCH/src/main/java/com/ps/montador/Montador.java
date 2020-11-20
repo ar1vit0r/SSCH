@@ -31,8 +31,12 @@ public class Montador {
                 String[] fenriz = trololo.split("//");
                 String[] aux = fenriz[0].split(" ");
                 
-                if(aux[0].equals("const")){
+                if(aux[0].equals("CONST") || aux[0].equals("const")){
                     aux = new String[]{aux[1]};
+                } else if(aux.length>1){
+                    if (aux[1].equals("CONST") || aux[1].equals("const")){
+                        aux = new String[]{aux[0],aux[2]};
+                    }
                 }
                 
                 //Verifica se é uma linha vazia
@@ -45,7 +49,7 @@ public class Montador {
             for(int i = 0; i < aux.length; i++) {
                 String[] fenriz = aux[i].split("//");
                 String[] aux2 = fenriz[0].split(" ");
-                if(aux2[0].equals("const")){
+                if(aux2[0].equals("const") || aux[0].equals("CONST")){
                     aux2 = new String[]{aux2[1]};
                 }
                 data.addAll(Arrays.asList(aux2));
