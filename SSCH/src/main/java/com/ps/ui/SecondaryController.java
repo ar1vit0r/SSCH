@@ -29,7 +29,7 @@ public class SecondaryController implements Initializable{
     private ObservableList<EntradaTabela> obsEntradaTabela; //Tipo padão necessario para colocar nas tabelas FXML
     private List<EntradaTabela> listaDeEntradaPilha = new ArrayList<>(); // Lista dos valores para a tabela de pilha
     private ObservableList<EntradaTabela> obsEntradaPilha; //Tipo padão necessario para colocar nas tabelas FXML
-    private short b = 0; //identifica se o bit 6 foi alterado;
+    private short b = 0; //identifica se o bit 7 foi alterado;
     
     //Variaveis FXML
     @FXML
@@ -90,7 +90,7 @@ public class SecondaryController implements Initializable{
     //Função para mostrar o valor do RI na scene
     @FXML
     void setRI() {
-        if(memoria.regs.ri > 63){ //verifica se o valor do opcode esta com o bit 6 alterado
+        if(memoria.regs.ri > 63){ //verifica se o valor do opcode esta com o bit 7 alterado
             b = 64;
         }else{ b = 0;}
         switch (memoria.regs.ri - b) { //Caso o opcode esteja com o bit alterado ele diminui esse valor para a verificação e mostrar qual a instruçãoa tual

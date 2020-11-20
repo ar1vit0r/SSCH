@@ -53,9 +53,9 @@ public class Carregador {
             }
         }
         
-        vm.regs.acc = 0;
-        vm.regs.pc = 1;
-        vm.memory = mem;
+        vm.regs.acc = 0;// Quando é resetado o valor de um programa o ACC é zerado para a execução do proximo programa
+        vm.regs.pc = 1;// Inicia no BR que pula para a primeira instrução pós pilha
+        vm.memory = mem;// Carrega na memoria o programa
         
     }
     
