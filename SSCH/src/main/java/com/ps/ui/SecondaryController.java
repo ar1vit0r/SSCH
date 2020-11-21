@@ -3,6 +3,8 @@ package com.ps.ui;
 import com.ps.executor.VM;
 import com.ps.executor.Instruction;
 import com.ps.models.EntradaTabela;
+import static com.ps.ui.PrimaryController.scene2;
+import java.io.IOException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,6 +19,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class SecondaryController implements Initializable{
     
@@ -89,7 +96,7 @@ public class SecondaryController implements Initializable{
     }
     //Função para mostrar o valor do RI na scene
     @FXML
-    void setRI() {
+    void setRI() throws IOException {
         if(memoria.regs.ri > 63){ //verifica se o valor do opcode esta com o bit 7 alterado
             b = 64;
         }else{ b = 0;}
@@ -126,6 +133,7 @@ public class SecondaryController implements Initializable{
                     break;
                 case 12:
                     regRI.setText("READ");
+                    this.newScene();
                     break;
                 case 9:
                     regRI.setText("RET");
@@ -141,6 +149,7 @@ public class SecondaryController implements Initializable{
                     break;
                 case 8:
                     regRI.setText("WRITE");
+                    this.newScene();
                     break;
                 default:
                     regRI.setText(String.valueOf(memoria.regs.ri));
@@ -154,7 +163,7 @@ public class SecondaryController implements Initializable{
     }
     //Função para inicializar os valores das tabelas na scene
     @FXML
-    public void inicializaNaTabelaMem() {
+    public void inicializaNaTabelaMem() throws IOException {
         //Chama as funções para alterar os valores dos registradores
         this.setPC();
         this.setSP();
@@ -198,7 +207,17 @@ public class SecondaryController implements Initializable{
         tbPilhaGeral.setItems(obsEntradaPilha);
         
     }
-    
+     private void newScene() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+        Parent root = (Parent) loader.load();
+        controller = (SecondaryController) loader.getController();
+        Stage stage = new Stage();
+        scene2 = new Scene(root, 750, 815);
+        stage.setScene(scene2);
+        stage.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
+        stage.setTitle("Execução");
+    }
+
     //get da lista de entrada tabela
     public List<EntradaTabela> getListaDeEntradaTabela() {
         return listaDeEntradaTabela;
