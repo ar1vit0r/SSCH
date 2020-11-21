@@ -1,9 +1,11 @@
 package com.ps.executor;
 
+import com.ps.executor.PseudoInstructions;
+import com.ps.executor.Registers;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
-
 import java.util.Scanner;
 
 public class InstructionAction
@@ -22,9 +24,9 @@ public class InstructionAction
             PseudoInstructions.memfetch(regs, memory);
 
             regs.acc += regs.re;
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
 
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -40,7 +42,7 @@ public class InstructionAction
 
             regs.pc = regs.re;
 
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -51,9 +53,9 @@ public class InstructionAction
         {
             if (regs.acc < 0) { return BR.run(regs, memory, _0, _1, _2); }
 
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
 
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -64,9 +66,9 @@ public class InstructionAction
         {
             if (regs.acc > 0) { return BR.run(regs, memory, _0, _1, _2); }
 
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
 
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -77,37 +79,34 @@ public class InstructionAction
         {
             if (regs.acc == 0) { return BR.run(regs, memory, _0, _1, _2); }
 
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
 
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
     // [SP] <- PC; PC <- opd1
-    // TODO: arrumar stack overflow quando é chamado CALL em uma
-    //       stack vazia de tamanho 1 (não deveria ocorrer overflow).
     public static Interface CALL = new Interface()
     {
         public ExecutionLog run(Registers regs, short[] memory, int stack_base, InputStream _1, OutputStream _2)
         {
             PseudoInstructions.set_re(regs, memory);
-            assert regs.re_mode != 2:
-                "Endereçamento Imediato não permitido para a intrução CALL";
             PseudoInstructions.memfetch(regs, memory);
 
-            memory[regs.sp + stack_base + 1] = (short) (regs.pc + 2);
-            regs.sp = (short) ((regs.sp + 1) % memory[stack_base]);
-            assert regs.sp != 0: "STACK OVERFLOW";
+            // Botar a próxima instrução no stack.
+            memory[regs.sp + stack_base + 1] = (short) (regs.pc + Instruction.withOpcode[regs.ri & 0b1111].size);
+            // E adicionar 1 ao sp, fazendo que ele dê a volta se for maior que o máximo.
+            regs.sp = (short) ((regs.sp + 1) % (memory[stack_base] + 1));
             regs.pc = regs.re;
 
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, stack_base);
         }
     };
 
     // opd1 <- opd2
     public static Interface COPY = new Interface()
     {
-        public ExecutionLog run(Registers regs, short[] memory, int stack_base, InputStream _1, OutputStream _2)
+        public ExecutionLog run(Registers regs, short[] memory, int _0, InputStream _1, OutputStream _2)
         {
             PseudoInstructions.set_re(regs, memory, PseudoInstructions.Opd.opd2);
             PseudoInstructions.memfetch(regs, memory, PseudoInstructions.Opd.opd2);
@@ -117,24 +116,24 @@ public class InstructionAction
             PseudoInstructions.memfetch(regs, memory);
             memory[regs.re] = opd2;
     
-            regs.pc += 3;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
     
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLogWithMemoryUpdate(regs, memory, _0, regs.re);
         }
     };
 
     // ACC <- ACC / opd1
     public static Interface DIVIDE = new Interface()
     {
-        public ExecutionLog run(Registers regs, short[] memory, int stack_base, InputStream _0, OutputStream _1)
+        public ExecutionLog run(Registers regs, short[] memory, int _0, InputStream _1, OutputStream _2)
         {
             PseudoInstructions.set_re(regs, memory);
             PseudoInstructions.memfetch(regs, memory);
     
             regs.acc /= regs.re;
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
     
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -147,9 +146,9 @@ public class InstructionAction
             PseudoInstructions.memfetch(regs, memory);
 
             regs.acc = regs.re;
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
 
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -162,9 +161,9 @@ public class InstructionAction
             PseudoInstructions.memfetch(regs, memory);
     
             regs.acc *= regs.re;
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
     
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -174,8 +173,6 @@ public class InstructionAction
         public ExecutionLog run(Registers regs, short[] memory, int _0, InputStream input, OutputStream _1)
         {
             PseudoInstructions.set_re(regs, memory);
-            assert regs.re_mode != 2:
-                "Endereçamento Imediato não permitido para a intrução READ";
             PseudoInstructions.memfetch(regs, memory);
     
             System.err.print(regs.re + "> ");
@@ -183,9 +180,9 @@ public class InstructionAction
             memory[regs.re] = scanner.nextShort();
             scanner.close();
     
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
     
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLogWithMemoryUpdate(regs, memory, _0, regs.re);
         }
     };
 
@@ -194,21 +191,26 @@ public class InstructionAction
     {
         public ExecutionLog run(Registers regs, short[] memory, int stack_base, InputStream _0, OutputStream _1)
         {
-            assert regs.sp != 0: "RET chamado com stack vazia";
+            if(memory[stack_base] != 0) // Evitar que % jogue uma exceção (é reportado como divisionByZero pelo generateLog mesmo assim).
+            {
+                regs.sp = (short) ((regs.sp - 1) % (memory[stack_base] + 1));
+                regs.pc = memory[regs.sp + stack_base + 1];
+            } 
+            else
+            {
+                regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
+            }
     
-            regs.sp -= 1;
-            regs.pc = memory[regs.sp + stack_base + 1];
-    
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, stack_base);
         }
     };
 
-    // término (fim) de execução
+    // Término (fim) de execução
     public static Interface STOP = new Interface()
     {
         public ExecutionLog run(Registers regs, short[] memory, int _0, InputStream _1, OutputStream _2)
         {
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
@@ -218,14 +220,12 @@ public class InstructionAction
         public ExecutionLog run(Registers regs, short[] memory, int _0, InputStream _1, OutputStream _2)
         {
             PseudoInstructions.set_re(regs, memory);
-            assert regs.re_mode != 2:
-                "Endereçamento Imediato não permitido para a intrução STORE";
             PseudoInstructions.memfetch(regs, memory);
     
             memory[regs.re] = regs.acc;
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
     
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLogWithMemoryUpdate(regs, memory, _0, regs.re);
         }
     };
 
@@ -238,22 +238,27 @@ public class InstructionAction
             PseudoInstructions.memfetch(regs, memory);
     
             regs.acc -= regs.re;
-            regs.pc += 2;
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
     
-            return PseudoInstructions.generateLog(regs, memory);
+            return PseudoInstructions.generateLog(regs, memory, _0);
         }
     };
 
     // output_stream <- opd1
-    public static Interface WRITE = (Registers regs, short[] memory, int _0, InputStream _1, OutputStream output) -> {
-        PseudoInstructions.set_re(regs, memory);
-        PseudoInstructions.memfetch(regs, memory);
-        
-        try {output.write( Short.toString(regs.re).getBytes() );output.write('\n');}
-        catch(IOException e) {/*ignore*/};
-        
-        regs.pc += 2;
-        
-        return PseudoInstructions.generateLog(regs, memory);
+    // NOTE: Pode não botar nada no output se ele não estiver aceitando input.
+    public static Interface WRITE = new Interface()
+    {
+        public ExecutionLog run(Registers regs, short[] memory, int _0, InputStream _1, OutputStream output)
+        {
+            PseudoInstructions.set_re(regs, memory);
+            PseudoInstructions.memfetch(regs, memory);
+    
+            try {output.write( Short.toString(regs.re).getBytes() );output.write('\n');}
+            catch(IOException e) {/*ignore*/};
+    
+            regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
+    
+            return PseudoInstructions.generateLog(regs, memory, _0);
+        }
     };
 }

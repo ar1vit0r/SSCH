@@ -1,5 +1,7 @@
 package com.ps.executor;
 
+import com.ps.executor.InstructionAction;
+
 public enum Instruction
 {
     // Manter opcode (primeiro número) em ordem ao atualizar, senão withOpcode vai ficar errado.
@@ -30,7 +32,7 @@ public enum Instruction
     }
 
     public final int opcode;
-    public final int size; // in words (16 bits)
+    public final int size; // em palavras da máquina (16 bits)
     public final int operands;
     public final InstructionAction.Interface action;
     public final AddressingMode[] opd1_addressing_modes;
@@ -68,4 +70,22 @@ public enum Instruction
     public boolean isCOPY()   {return opcode == COPY.opcode;}
     public boolean isMULT()   {return opcode == MULT.opcode;}
     public boolean isCALL()   {return opcode == CALL.opcode;}
+
+    public boolean allowsOpd1AddressingMode(AddressingMode mode)
+    {
+        for(AddressingMode addressing_mode : opd1_addressing_modes)
+        {
+            if(addressing_mode == mode) {return true;}
+        }
+        return false;
+    }
+
+    public boolean allowsOpd2AddressingMode(AddressingMode mode)
+    {
+        for(AddressingMode addressing_mode : opd2_addressing_modes)
+        {
+            if(addressing_mode == mode) {return true;}
+        }
+        return false;
+    }
 }
