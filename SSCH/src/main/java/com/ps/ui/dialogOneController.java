@@ -28,12 +28,19 @@ public class dialogOneController implements Initializable{
     @FXML
     private TextField readwrite;
     
-    public void initialize (URL location, ResourceBundle resources) {
-        readwrite.setText("");
-        //alert.setContentText("Insira um valor.");
+    public dialogOneController(){
+    
     }
     
-       //Função para ler entrada de READ ou WRITE
+    @Override
+    public void initialize (URL location, ResourceBundle resources) {
+        readwrite.setText("");
+        alert.setTitle("Erro");
+        alert.setHeaderText("Erro de entrada");
+        alert.setContentText("Insira um valor.");
+    }
+    
+    //Função para ler entrada de READ ou WRITE
     @FXML
     private void readwrite() throws IOException {
         if( !readwrite.getText().isBlank() ){
@@ -41,7 +48,7 @@ public class dialogOneController implements Initializable{
             System.out.print(aux + "\n");
         }else alert.showAndWait();
         
-        Stage stage = (Stage) readwrite.getScene().getWindow(); //Obtendo a janela atual
-        stage.close();
+        //Stage stage = (Stage) readwrite.getScene().getWindow(); //Obtendo a janela atual
+        //stage.close();
     }
 }

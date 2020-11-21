@@ -33,7 +33,7 @@ public class SecondaryController implements Initializable{
     //Variaveis de Classes
     private static SecondaryController controller = new SecondaryController(); //Criação da instancia, singleton
     private VM memoria = VM.getInstance(); // Chamando a instancia via metodo 
-    private dialogOneController controller2;
+    private dialogOneController controller2 = new dialogOneController();
     //Variaveis auxiliares
     private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>(); // Lista dos valores para as tabela de memoria
     private ObservableList<EntradaTabela> obsEntradaTabela; //Tipo padão necessario para colocar nas tabelas FXML
