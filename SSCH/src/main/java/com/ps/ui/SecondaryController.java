@@ -33,7 +33,7 @@ public class SecondaryController implements Initializable{
     //Variaveis de Classes
     private static SecondaryController controller = new SecondaryController(); //Criação da instancia, singleton
     private VM memoria = VM.getInstance(); // Chamando a instancia via metodo 
-    private Alert alert = new Alert(Alert.AlertType.ERROR);
+    private dialogOneController controller2;
     //Variaveis auxiliares
     private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>(); // Lista dos valores para as tabela de memoria
     private ObservableList<EntradaTabela> obsEntradaTabela; //Tipo padão necessario para colocar nas tabelas FXML
@@ -61,7 +61,7 @@ public class SecondaryController implements Initializable{
     @FXML
     private TextField regACC;
     @FXML
-    private TextField readwrite;
+    private TextField conSO;
     @FXML
     private TableView<EntradaTabela> tbPilhaGeral; //Tabela da pilha geral
     @FXML
@@ -76,17 +76,6 @@ public class SecondaryController implements Initializable{
     //Função de inicialização da scene
     @Override
     public void initialize (URL location, ResourceBundle resources) {
-        readwrite.setText("");
-        alert.setTitle("Erro");
-        alert.setHeaderText("Erro de entrada");
-        alert.setContentText("Insira um valor.");
-    }
-    //Função para ler entrada de READ ou WRITE
-    @FXML
-    private void readwrite() throws IOException {
-        if( !readwrite.getText().isBlank() ){
-            memoria.memory[ memoria.regs.pc + 1 ] = (short) parseInt( readwrite.getText() );
-        }else alert.showAndWait();
     }
     //Função para mostrar o valor do ACC na scene
     @FXML
@@ -203,7 +192,7 @@ public class SecondaryController implements Initializable{
             //Instancia um novo EntradaTabela com a s informações necessarias
             EntradaTabela entrada = new EntradaTabela( i, memoria.memory[i]);
             listaDeEntradaTabela.add(entrada); // Adiciona a nova instancio a AbservableList da memória
-            if(i>2 && i<(memoria.memory[memoria.stack_base])){ //Separa os valores que vão entrar para a pilha
+            if(i>2 && i<(memoria.memory[1])){ //Separa os valores que vão entrar para a pilha
                 enchePilha(entrada); //Chama o metodo similar a este que enche os valores da pilah
             }
             
@@ -224,7 +213,7 @@ public class SecondaryController implements Initializable{
      private void newScene() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dialogOne.fxml"));
         Parent root = (Parent) loader.load();
-        controller = (SecondaryController) loader.getController();
+        controller2 = (dialogOneController) loader.getController();
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 815);
         stage.setScene(scene2);

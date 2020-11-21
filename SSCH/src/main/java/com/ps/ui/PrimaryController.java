@@ -147,7 +147,7 @@ public class PrimaryController implements Initializable {
     }
     
     @FXML
-    private void stepbyStep(ActionEvent event) {
+    private void stepbyStep(ActionEvent event) throws IOException {
         if(textIntegrated != null || selectedFile != null){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
@@ -159,14 +159,14 @@ public class PrimaryController implements Initializable {
         }else alert.showAndWait();
     }
     
-    private void nextStep(){
+    private void nextStep() throws IOException{
         vm.step();
         controller.inicializaNaTabelaMem();
     }
 
     //Funções para migrar entre maneiras de execução
     @FXML
-    private void resetAll(ActionEvent event) throws FileNotFoundException {
+    private void resetAll(ActionEvent event) throws FileNotFoundException, IOException {
         if(textIntegrated != null || selectedFile != null){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(false);
