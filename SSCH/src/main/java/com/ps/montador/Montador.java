@@ -34,10 +34,16 @@ public class Montador {
                 String[] aux = fenriz[0].split(" ");
                 
                 if(aux[0].equals("CONST") || aux[0].equals("const")){
+                    wasConst = true;
                     aux = new String[]{aux[1]};
+                    dontTouch.add(pc);
+                    pc = pc + 1;
                 } else if(aux.length>1){
                     if (aux[1].equals("CONST") || aux[1].equals("const")){
+                        wasConst = true;
                         aux = new String[]{aux[0],aux[2]};
+                        dontTouch.add(pc);
+                        pc = pc + 1;
                     }
                 }
                 
@@ -60,14 +66,41 @@ public class Montador {
                 }
             }
         } else {
+            boolean wasConst = false;
             String[] aux = texto.split("\n");
             for(int i = 0; i < aux.length; i++) {
                 String[] fenriz = aux[i].split("//");
                 String[] aux2 = fenriz[0].split(" ");
-                if(aux2[0].equals("const") || aux[0].equals("CONST")){
+                
+                if(aux2[0].equals("CONST") || aux2[0].equals("const")){
+                    wasConst = true;
                     aux2 = new String[]{aux2[1]};
+                    dontTouch.add(pc);
+                    pc = pc + 1;
+                } else if(aux2.length>1){
+                    if (aux2[1].equals("CONST") || aux2[1].equals("const")){
+                        wasConst = true;
+                        aux2 = new String[]{aux2[0],aux2[2]};
+                        dontTouch.add(pc);
+                        pc = pc + 1;
+                    }
                 }
-                data.addAll(Arrays.asList(aux2));
+                if(!aux2[0].isEmpty()){
+                    //System.out.println("SEX");
+                    //System.out.println(pc);
+                    boolean hasLabel = false;
+                    for(int q = 0; q < aux2.length; q++){
+                        if(aux2[q].contains(":")){
+                            hasLabel = true;
+                        }
+                    }
+                    if(hasLabel && !wasConst){
+                        pc = pc + aux2.length - 1;
+                    } else if (!wasConst){
+                        pc = pc + aux2.length;
+                    }
+                    data.addAll(Arrays.asList(aux2));
+                }
             }
         }
 
