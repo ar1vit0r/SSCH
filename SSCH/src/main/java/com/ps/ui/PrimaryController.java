@@ -112,7 +112,10 @@ public class PrimaryController implements Initializable {
         }else alert.showAndWait();
     }
     
-    private void executingAll(){
+    private void executingAll() throws IOException{
+        if(Instruction.withOpcode[vm.memory[vm.regs.pc] & 0b1111].isREAD()){
+         controller.newScene();
+        }
         while(!vm.step().instruction.isSTOP()) {
             System.out.println("Ran instruction");
             stope = true;
@@ -152,6 +155,9 @@ public class PrimaryController implements Initializable {
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
+            if(Instruction.withOpcode[vm.memory[vm.regs.pc] & 0b1111].isREAD()){
+                controller.newScene();
+            }
             if(vm.step().instruction.isSTOP() || stope == true){
                 stope = true;
                 controller.inicializaNaTabelaMem();
@@ -160,6 +166,10 @@ public class PrimaryController implements Initializable {
     }
     
     private void nextStep() throws IOException{
+        if(Instruction.withOpcode[vm.memory[vm.regs.pc ] & 0b1111].isREAD()){
+            System.out.println("Foi");
+            controller.newScene();
+        }
         vm.step();
         controller.inicializaNaTabelaMem();
     }

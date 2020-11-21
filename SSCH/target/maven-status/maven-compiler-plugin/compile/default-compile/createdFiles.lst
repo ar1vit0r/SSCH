@@ -6,6 +6,7 @@ com\ps\executor\Instruction.class
 com\ps\executor\ExecutionLog$OpdInfo.class
 com\ps\executor\PseudoInstructions.class
 com\ps\montador\Montador.class
+com\ps\ui\dialogOneController.class
 com\ps\executor\InstructionAction$11.class
 com\ps\executor\InstructionAction$6.class
 module-info.class

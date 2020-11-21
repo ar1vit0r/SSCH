@@ -136,7 +136,6 @@ public class SecondaryController implements Initializable{
                     break;
                 case 12:
                     regRI.setText("READ");
-                    this.newScene();
                     break;
                 case 9:
                     regRI.setText("RET");
@@ -210,16 +209,17 @@ public class SecondaryController implements Initializable{
         tbPilhaGeral.setItems(obsEntradaPilha);
         
     }
-     private void newScene() throws IOException{
+     public void newScene() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dialogOne.fxml"));
         Parent root = (Parent) loader.load();
         controller2 = (dialogOneController) loader.getController();
         Stage stage = new Stage();
-        scene2 = new Scene(root, 750, 815);
+        scene2 = new Scene(root, 200, 150);
         stage.setScene(scene2);
         stage.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
         stage.setTitle("Entrada de Valor");
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     //get da lista de entrada tabela
