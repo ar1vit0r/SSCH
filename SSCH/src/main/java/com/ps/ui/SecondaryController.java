@@ -5,6 +5,7 @@ import com.ps.executor.Instruction;
 import com.ps.models.EntradaTabela;
 import static com.ps.ui.PrimaryController.scene2;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,25 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class SecondaryController implements Initializable{
     
     //Variaveis de Classes
     private static SecondaryController controller = new SecondaryController(); //Criação da instancia, singleton
     private VM memoria = VM.getInstance(); // Chamando a instancia via metodo 
-    
+    private Alert alert = new Alert(Alert.AlertType.ERROR);
     //Variaveis auxiliares
     private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>(); // Lista dos valores para as tabela de memoria
     private ObservableList<EntradaTabela> obsEntradaTabela; //Tipo padão necessario para colocar nas tabelas FXML
@@ -58,6 +61,8 @@ public class SecondaryController implements Initializable{
     @FXML
     private TextField regACC;
     @FXML
+    private TextField readwrite;
+    @FXML
     private TableView<EntradaTabela> tbPilhaGeral; //Tabela da pilha geral
     @FXML
     private TableColumn<EntradaTabela, Integer> tbOrdemPilha; // Coluna da ordem da tabela de pilha
@@ -71,9 +76,18 @@ public class SecondaryController implements Initializable{
     //Função de inicialização da scene
     @Override
     public void initialize (URL location, ResourceBundle resources) {
+        readwrite.setText("");
+        alert.setTitle("Erro");
+        alert.setHeaderText("Erro de entrada");
+        alert.setContentText("Insira um valor.");
     }
-    
-    
+    //Função para ler entrada de READ ou WRITE
+    @FXML
+    private void readwrite() throws IOException {
+        if( !readwrite.getText().isBlank() ){
+            memoria.memory[ memoria.regs.pc + 1 ] = (short) parseInt( readwrite.getText() );
+        }else alert.showAndWait();
+    }
     //Função para mostrar o valor do ACC na scene
     @FXML
     void setACC() {
@@ -208,14 +222,15 @@ public class SecondaryController implements Initializable{
         
     }
      private void newScene() throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("dialogOne.fxml"));
         Parent root = (Parent) loader.load();
         controller = (SecondaryController) loader.getController();
         Stage stage = new Stage();
         scene2 = new Scene(root, 750, 815);
         stage.setScene(scene2);
         stage.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
-        stage.setTitle("Execução");
+        stage.setTitle("Entrada de Valor");
+        stage.initModality(Modality.APPLICATION_MODAL);
     }
 
     //get da lista de entrada tabela
