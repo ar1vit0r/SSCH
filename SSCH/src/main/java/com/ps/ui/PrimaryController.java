@@ -34,10 +34,13 @@ public class PrimaryController implements Initializable {
 
     //Variaveis de abertura de Scenes
     public static Scene scene2;
+    public static Scene scene3;
     private Stage stage;
+    private Stage stage1;
     //Variaveis de instancia de classes
     public Montador montador = new Montador();
     private SecondaryController controller;
+    private DialogTwoController controller2;
     private VM vm = VM.getInstance();
     private Carregador carregador = new Carregador();
     private String textIntegrated = null; 
@@ -86,9 +89,18 @@ public class PrimaryController implements Initializable {
         stage.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
         stage.setTitle("Execução");
     }
-
-    //Funções que chamam execução 
-    //Funções de execução completa
+    
+    private void newScene2() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("dialogTwo.fxml"));
+        Parent root2 = (Parent) loader.load();
+        controller2 = (DialogTwoController) loader.getController();
+        stage1 = new Stage();
+        scene3 = new Scene(root2, 600, 600);
+        stage.setScene(scene3);
+        stage.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
+        stage.setTitle("Help");
+    }
+     
     @FXML
     private void executeAll() throws IOException {    
         if(textIntegrated != null || selectedFile != null){
@@ -112,10 +124,21 @@ public class PrimaryController implements Initializable {
         }else alert.showAndWait();
     }
     
+<<<<<<< Updated upstream
     private void executingAll() throws IOException{
         if(Instruction.withOpcode[vm.memory[vm.regs.pc] & 0b1111].isREAD()){
          controller.newScene();
         }
+=======
+    //Funções que chamam execução 
+    //Funções de execução completa
+    @FXML
+    private void opendialogTwo() throws IOException {    
+       this.newScene2();
+    }
+    
+    private void executingAll(){
+>>>>>>> Stashed changes
         while(!vm.step().instruction.isSTOP()) {
             System.out.println("Ran instruction");
             stope = true;
