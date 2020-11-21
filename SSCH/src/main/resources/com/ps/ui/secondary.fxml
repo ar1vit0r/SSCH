@@ -96,7 +96,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="conSO" layoutX="119.0" layoutY="348.0" opacity="0.8" prefHeight="25.0" prefWidth="198.0" />
+                              <TextField fx:id="conSO" editable="false" layoutX="119.0" layoutY="348.0" opacity="0.8" prefHeight="25.0" prefWidth="198.0" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
