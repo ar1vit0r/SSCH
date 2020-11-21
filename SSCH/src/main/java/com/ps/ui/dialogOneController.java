@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ps.ui;
 
 import com.ps.executor.VM;
@@ -13,6 +8,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -27,6 +23,8 @@ public class DialogOneController implements Initializable{
     
     @FXML
     private TextField readwrite;
+    @FXML
+    private Button ok;
     
     public DialogOneController(){
     

@@ -136,7 +136,7 @@ public class SecondaryController implements Initializable{
                     break;
                 case 12:{
                     regRI.setText("READ");
-                    this.newScene(); 
+                    newScene(); 
                     break; }
                 case 9:
                     regRI.setText("RET");
@@ -152,7 +152,7 @@ public class SecondaryController implements Initializable{
                     break;
                 case 8:{
                     regRI.setText("WRITE");
-                    this.newScene();
+                    newScene();
                     break; }
                 default:
                     regRI.setText(String.valueOf(memoria.regs.ri));
