@@ -20,7 +20,7 @@ import javafx.stage.Stage;
  *
  * @author Ari Vitor
  */
-public class dialogOneController implements Initializable{
+public class DialogOneController implements Initializable{
     
     private VM memoria = VM.getInstance(); // Chamando a instancia via metodo 
     private Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -28,7 +28,7 @@ public class dialogOneController implements Initializable{
     @FXML
     private TextField readwrite;
     
-    public dialogOneController(){
+    public DialogOneController(){
     
     }
     
@@ -48,7 +48,7 @@ public class dialogOneController implements Initializable{
             System.out.print(aux + "\n");
         }else alert.showAndWait();
         
-        //Stage stage = (Stage) readwrite.getScene().getWindow(); //Obtendo a janela atual
-        //stage.close();
+        Stage stage = (Stage) readwrite.getScene().getWindow(); //Obtendo a janela atual
+        stage.close();
     }
 }

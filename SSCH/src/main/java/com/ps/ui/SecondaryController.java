@@ -33,7 +33,7 @@ public class SecondaryController implements Initializable{
     //Variaveis de Classes
     private static SecondaryController controller = new SecondaryController(); //Criação da instancia, singleton
     private VM memoria = VM.getInstance(); // Chamando a instancia via metodo 
-    private dialogOneController controller2 = new dialogOneController();
+    private DialogOneController controller2 = new DialogOneController();
     //Variaveis auxiliares
     private List<EntradaTabela> listaDeEntradaTabela = new ArrayList<>(); // Lista dos valores para as tabela de memoria
     private ObservableList<EntradaTabela> obsEntradaTabela; //Tipo padão necessario para colocar nas tabelas FXML
@@ -134,9 +134,10 @@ public class SecondaryController implements Initializable{
                 case 14:
                     regRI.setText("MULT");;
                     break;
-                case 12:
+                case 12:{
                     regRI.setText("READ");
-                    break;
+                    this.newScene(); 
+                    break; }
                 case 9:
                     regRI.setText("RET");
                     break;
@@ -149,10 +150,10 @@ public class SecondaryController implements Initializable{
                 case 6:
                     regRI.setText("SUB");
                     break;
-                case 8:
+                case 8:{
                     regRI.setText("WRITE");
                     this.newScene();
-                    break;
+                    break; }
                 default:
                     regRI.setText(String.valueOf(memoria.regs.ri));
                     break;
@@ -209,10 +210,11 @@ public class SecondaryController implements Initializable{
         tbPilhaGeral.setItems(obsEntradaPilha);
         
     }
-     public void newScene() throws IOException{
+    
+    public void newScene() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dialogOne.fxml"));
         Parent root = (Parent) loader.load();
-        controller2 = (dialogOneController) loader.getController();
+        controller2 = (DialogOneController) loader.getController();
         Stage stage = new Stage();
         scene2 = new Scene(root, 200, 150);
         stage.setScene(scene2);
