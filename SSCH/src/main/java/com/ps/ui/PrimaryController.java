@@ -91,14 +91,15 @@ public class PrimaryController implements Initializable {
     }
     
     private void newScene2() throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("dialogTwo.fxml"));
-        Parent root2 = (Parent) loader.load();
-        controller2 = (DialogTwoController) loader.getController();
+        FXMLLoader loader2 = new FXMLLoader(getClass().getResource("dialogTwo.fxml"));
+        Parent root2 = (Parent) loader2.load();
+        controller2 = (DialogTwoController) loader2.getController();
         stage1 = new Stage();
         scene3 = new Scene(root2, 600, 600);
-        stage.setScene(scene3);
-        stage.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
-        stage.setTitle("Help");
+        stage1.setScene(scene3);
+        stage1.getIcons().add(new Image(PrimaryController.class.getResourceAsStream("icon.png")));
+        stage1.setTitle("Help");
+        stage1.show();
     }
      
     @FXML
@@ -124,26 +125,23 @@ public class PrimaryController implements Initializable {
         }else alert.showAndWait();
     }
     
-<<<<<<< Updated upstream
+
     private void executingAll() throws IOException{
         if(Instruction.withOpcode[vm.memory[vm.regs.pc] & 0b1111].isREAD()){
          controller.newScene();
         }
-=======
-    //Funções que chamam execução 
-    //Funções de execução completa
-    @FXML
-    private void opendialogTwo() throws IOException {    
-       this.newScene2();
-    }
-    
-    private void executingAll(){
->>>>>>> Stashed changes
         while(!vm.step().instruction.isSTOP()) {
             System.out.println("Ran instruction");
             stope = true;
         }
         System.out.println("Stopped");
+    }
+
+    //Funções que chamam execução 
+    //Funções de execução completa
+    @FXML
+    private void opendialogTwo() throws IOException {    
+       this.newScene2();
     }
 
     //Funções para StepByStep

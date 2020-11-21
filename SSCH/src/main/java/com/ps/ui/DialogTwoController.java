@@ -21,9 +21,5 @@ public class DialogTwoController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {
 
     } 
-    
-    @FXML
-    private void close() throws IOException {
-        
-    }
+
 }
