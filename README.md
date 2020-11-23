@@ -1,4 +1,6 @@
 # SSCH
+Autores: José Felipe, Ari Vitor, Ariam Barth, Frederico Antunes, Frederico Schawm, Gabriel Gomes, Lucas Moraes e Matheus Chaves.
+
 Projeto de um emulador da Arquitetura de um Computador hipotético baseado na arquitetura do livro do Calingaert.
 Projeto desenvolvido pela IDE NetBeans, utilizando a biblioteca para interface gráfica Javafx.
 
