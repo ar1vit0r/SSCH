@@ -1,258 +1,352 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.ps.montador;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+import java.io.FileWriter;  
 
 
+/**
+ *
+ * @author Ariam
+ */
 public class Montador {
-         
-    public static short[][] main(String diretorio, boolean flag, String texto) throws FileNotFoundException{
+
+    public static String montar(String diretorio, int stack) throws FileNotFoundException, IOException {
+
+        HashMap<String, ArrayList<Integer>> refDeFora = new HashMap<>();
+        HashMap<String, ArrayList<Integer>> refPraFora = new HashMap<>();
+        HashMap<String, Integer> rotulos = new HashMap<>();
         List<Integer> dontTouch = new ArrayList<>();
-        int pc = 0;
-        //ArrayList para armazenamento do conteudo do arquivo
+
+        //váriaveis/objetos auxiliares pra funcionar
+        File textfile = new File(diretorio);
+        Scanner reader = new Scanner(textfile);
         List<String> data = new ArrayList<>();
-        //HashMap criado para tabela de Símbolos, linkando o nome da label com o endereço
-        //Exemplo: (FIM, 23)
-        Map<String, Integer> tabelaDeSimbolos = new HashMap<String, Integer>();
-        if(flag){
-        //Tratamento de exceção para leitura do arquivo e teste para verificar se o arquivo está vazio.
-            File textfile = new File(diretorio);
-            Scanner reader = new Scanner(textfile);
-            boolean wasConst = false;
+        //List<Short> bin = new ArrayList<>();
 
+        //flags auxiliares pra errors
+        boolean hasEnd = false;
+        boolean hasStart = false;
+        boolean hasStack = false;
+        int linhaAtual = -1; //do{}while() é overrated
+        int pc = 0;
+        int stackSize = 0;
+        String nomeMod = "";
+        String erro = "";
 
-            while(reader.hasNextLine()){
-                String trololo = reader.nextLine();
-                String[] fenriz = trololo.split("//");
+        String lst = "";        
+        
+        while (reader.hasNextLine()) { //passo 1
+            String trololo = reader.nextLine();
+            trololo = trololo.toUpperCase();
+            linhaAtual++;
+
+            if (trololo.length() > 80) {
+                erro += new ErrorManager(1, linhaAtual).errorWarning();
+                System.out.println(erro); // erro de linha mucho grande
+            }
+
+            if (!trololo.startsWith("*")) { //joga comentários fora 
+                String[] fenriz = trololo.split("\\*");//editar pro símbolo de comment correto — não tem no pdf, consideramos *
                 String[] aux = fenriz[0].split(" ");
-                
-                if(aux[0].equals("CONST") || aux[0].equals("const")){
-                    wasConst = true;
-                    aux = new String[]{aux[1]};
-                    dontTouch.add(pc);
-                    pc = pc + 1;
-                } else if(aux.length>1){
-                    if (aux[1].equals("CONST") || aux[1].equals("const")){
-                        wasConst = true;
-                        aux = new String[]{aux[0],aux[2]};
-                        dontTouch.add(pc);
-                        pc = pc + 1;
-                    }
+                //System.out.println(aux.length);
+                if (aux[0].equals("START")) {
+                    nomeMod = aux[1];
+                    continue;
                 }
-                
-                //Verifica se é uma linha vazia
-                if(!aux[0].isEmpty()){
-                    //System.out.println("SEX");
-                    //System.out.println(pc);
-                    boolean hasLabel = false;
-                    for(int q = 0; q < aux.length; q++){
-                        if(aux[q].contains(":")){
-                            hasLabel = true;
-                        }
+
+                if (aux[0].equals("END")) {
+                    hasEnd = true; // pra tratar erro do end
+                    break;
+                }
+                if (aux[0].equals("EXTR")) {
+                    refDeFora.put(aux[1], new ArrayList<>());
+                    continue;
+                }
+                if (aux[0].equals("EXTDEF")) {
+                    refPraFora.put(aux[1], new ArrayList<>());
+                    continue;
+                }
+                if (aux[0].equals("STACK")) {
+                    hasStack = true;
+                    if (aux.length == 2) {
+                        stackSize = Integer.parseInt(aux[1]);
+                    } else {//erro de sintaxe extremamente preciso pra esse caso
+                        erro += new ErrorManager(5, linhaAtual).errorWarning();
                     }
-                    if(hasLabel && !wasConst){
-                        pc = pc + aux.length - 1;
-                    } else if (!wasConst){
-                        pc = pc + aux.length;
+                    continue;
+                }
+                if (refPraFora.containsKey(aux[0])) {
+                    refPraFora.get(aux[0]).add(pc);
+                }
+
+                if (aux[0].equals("CONST")) {
+                    data.add(aux[0] + aux[1]);
+                    pc++;
+                    continue;
+                }
+
+                if (!(new Label(aux[0]).isLabel())) {
+
+                    if (rotulos.containsKey(aux[0])) {
+                        erro += new ErrorManager(6, linhaAtual).errorWarning();
                     }
+
+                    rotulos.put(aux[0], pc);
+                    pc += aux.length - 1;
+                    if (aux[1].equals("CONST")) {
+                        aux = new String[]{aux[0], aux[1] + aux[2]}; //ooohray
+                    }
+                    for (int i = 1; i < aux.length; i++) {
+                        data.add(aux[i]);
+                    }
+                } else {
+                    pc += aux.length;
                     data.addAll(Arrays.asList(aux));
                 }
+
+                //todos os lugares q tem a LABEL externa [1,5]
+                // LABEL, [1,5] ta em outro arquivo
+                //exdef LABEL
+                //label space
             }
-        } else {
-            boolean wasConst = false;
-            String[] aux = texto.split("\n");
-            for(int i = 0; i < aux.length; i++) {
-                String[] fenriz = aux[i].split("//");
-                String[] aux2 = fenriz[0].split(" ");
-                
-                if(aux2[0].equals("CONST") || aux2[0].equals("const")){
-                    wasConst = true;
-                    aux2 = new String[]{aux2[1]};
-                    dontTouch.add(pc);
-                    pc = pc + 1;
-                } else if(aux2.length>1){
-                    if (aux2[1].equals("CONST") || aux2[1].equals("const")){
-                        wasConst = true;
-                        aux2 = new String[]{aux2[0],aux2[2]};
-                        dontTouch.add(pc);
-                        pc = pc + 1;
-                    }
-                }
-                if(!aux2[0].isEmpty()){
-                    //System.out.println("SEX");
-                    //System.out.println(pc);
-                    boolean hasLabel = false;
-                    for(int q = 0; q < aux2.length; q++){
-                        if(aux2[q].contains(":")){
-                            hasLabel = true;
-                        }
-                    }
-                    if(hasLabel && !wasConst){
-                        pc = pc + aux2.length - 1;
-                    } else if (!wasConst){
-                        pc = pc + aux2.length;
-                    }
-                    data.addAll(Arrays.asList(aux2));
-                }
-            }
+
+        }
+        if(hasStack == false){
+            stackSize = stack;
+        }
+        if (!hasEnd) { //tratadando erro na marra
+            erro += new ErrorManager(9, linhaAtual).errorWarning();
         }
 
-        //Tratamento das LABEL
-        //Procura no código as Label
-        //Quando as encontra, coloca na tabela de Simbolos com a posição
-        //E não passa a string para a Próxima List aux_data
-        
-        List<String> aux_data = new ArrayList<>();
-        int index_label = 0;
-        for (String iterator : data){
-            
-            char doisPontos = iterator.charAt(iterator.length()-1);
-            //Tratamento de LABELS
-            if (doisPontos == ':') {
-                iterator = iterator.replace(":", "");
-                iterator = iterator.toUpperCase();
-                tabelaDeSimbolos.put(iterator, index_label);
-            }
-            
-            else {
-                aux_data.add(iterator);
-                ++index_label;
-            }
-            
+        for (int i = 0; i < data.size(); i++) {
+            System.out.println(data.get(i));
         }
-        
-        
-        //Vetor onde as operações são convertidas com seus respectivos numero
-        short[] bin = new short[aux_data.size()];  
-        
-        //Envio do arquivo para um vetor auxiliar
-        String[] code = new String[aux_data.size()];
-        code = aux_data.toArray(code);
-        
-        //Leitura do vetor auxiliar e armazenamento do opcode de cada operação
+        linhaAtual = 0;
+        short[] bin = new short[data.size()];
         pc = 0;
-        for (int i = 0; i < code.length; i++) {  
-            code[i] = code[i].toUpperCase();
-            switch (code[i]) {
+        for (int i = 0; i < data.size(); i++) {  //passo 2
+            switch (data.get(i)) {
                 case "ADD":
-                    pc ++;
+                    dontTouch.add(pc);                    
                     bin[i] = 2;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
+                    linhaAtual++;
                     break;
                 case "BR":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 0;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
+                    linhaAtual++;
                     break;
                 case "BRNEG":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 5;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
+                    linhaAtual++;
                     break;
                 case "BRPOS":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 1;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
+                    linhaAtual++;
                     break;
                 case "BRZERO":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 4;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
+                    linhaAtual++;
                     break;
                 case "CALL":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 15;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    linhaAtual++;
+                    pc++;
                     break;
                 case "COPY":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 13;
+                    pc++;
                     break;
                 case "DIVIDE":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 10;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
                     break;
                 case "LOAD":
-                    pc ++;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    dontTouch.add(pc);
+                    pc++;
                     bin[i] = 3;
                     break;
                 case "MULT":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 14;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    linhaAtual++;
+                    pc++;
                     break;
                 case "READ":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 12;
+                    linhaAtual++;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
                     break;
                 case "RET":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 9;
+                    linhaAtual++;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
                     break;
                 case "STOP":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 11;
+                    lst += "\n" + pc + " " + bin[i] + " " + linhaAtual;
+                    pc++;
+                    linhaAtual++;
                     break;
                 case "STORE":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 7;
+                    linhaAtual++;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    pc++;
                     break;
                 case "SUB":
-                    pc ++;
+                    dontTouch.add(pc);
                     bin[i] = 6;
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    linhaAtual++;
+                    pc++;
                     break;
-                case "WRITE":
-                    pc ++;
+                case "WRITE":                    
+                    dontTouch.add(pc);
                     bin[i] = 8;
-                    break;
-                case "CONST":
+                    lst += "\n" + pc + " " + bin[i] + " ";
+                    linhaAtual++;
+                    pc++;
                     break;
                 case "SPACE":
+                    lst += "\n" + pc + " " + bin[i] + " " + linhaAtual;
                     dontTouch.add(pc);
-                    pc ++;
+                    pc++;
+                    linhaAtual++;
                     break;
                 default:
-                    String aux = code[i];
                     
-                    //VE SE É UMA LABEL
-                    if (tabelaDeSimbolos.containsKey(aux)){
-                        pc ++;
-                        int aux_tabela = tabelaDeSimbolos.get(aux);
+                    if (data.get(i).startsWith("CONST")) {
+                        bin[i] = (short) Integer.parseInt(data.get(i).replace("CONST", ""));
+                        dontTouch.add(pc);
+                        System.out.println(pc);
+                        lst += "\n" + pc + " " + bin[i] + " " + linhaAtual;
+                        pc++;
+                        linhaAtual++;
+                        break;
+                    }
+                    pc++;
+                    //String aux = data.get(i);
+                    if(data.get(i).endsWith(",I")){                        
+                        if ((i - 2) >= 0) {
+                            if (data.get(i - 2).equals("COPY")) {
+                                bin[i - 2] = (short) (bin[i - 2] + 32);
+                            } else {
+                                bin[i - 1] = (short) (bin[i - 1] + 16);
+                            }
+                        } else {
+                            bin[i - 1] = (short) (bin[i - 1] + 16);
+                        }
+                        data.set(i, data.get(i).replace(",I", ""));
+                        
+                    }
+                    if (rotulos.containsKey(data.get(i))) {
+                        int aux_tabela = rotulos.get(data.get(i));
                         bin[i] = (short) aux_tabela;
+                        lst = lst + bin[i] + " " + linhaAtual;
+                        break;
                     }
-                    
+                    if (refDeFora.containsKey(data.get(i))) {
+                        refDeFora.get(data.get(i)).add(i);
+                        bin[i] = 0; //placeholder, vai ser alterado no ligador
+                        System.out.println(data.get(i) + " na pos +" + i);
+                        lst = lst + bin[i] + " " + linhaAtual;
+
+                        break;
+                    }
+                    //literal
                     //SE NÃO FOR UMA LABE, VERIFICA SE É IMEDIATO OU DIRETO
-                    else if(aux.startsWith("@")){
-                        pc ++;
-                        if((i-2)>=0) {
-                            if(code[i-2].equals("COPY")){
-                                bin[i-2] = (short)(bin[i-2] + 64);
-                            } else bin[i-1] = (short)(bin[i-1] + 64);                
-                        } else bin[i-1] = (short)(bin[i-1] + 64);
-                        aux = aux.replace("@", "");
-                        bin[i] = (short) Integer.parseInt(aux);
-                    } 
-                    
-                    else {
-                        pc ++;
-                        bin[i] = (short) Integer.parseInt(code[i]);
+                    if (data.get(i).startsWith("#")) {
+                        if ((i - 2) >= 0) {
+                            if (data.get(i - 2).equals("COPY")) {
+                                bin[i - 2] = (short) (bin[i - 2] + 64);
+                            } else {
+                                bin[i - 1] = (short) (bin[i - 1] + 64);
+                            }
+                        } else {
+                            bin[i - 1] = (short) (bin[i - 1] + 64);
+                        }
+                        data.set(i, data.get(i).replace("#", ""));
+                        bin[i] = (short) Integer.parseInt(data.get(i));
+                    } else {
+                        bin[i] = (short) Integer.parseInt(data.get(i));
                     }
-                break;
+                    lst = lst + bin[i] + " " + linhaAtual;
             }
         }
-        
-        //IMEDIATO OU DIRETO
-        //0000000001000001
-        //Retorno do vetor com os opcodes do arquivo de operações
-        short robson[] = new short[dontTouch.size()];
-        for (int i = 0; i < dontTouch.size(); i++) {
-            int asd = dontTouch.get(i);
-            robson[i] = (short) asd;
+        for (int i = 0; i < bin.length; i++) {
+            System.out.println(bin[i]);
         }
-        short finish[][] = new short[2][];
-        finish[0] = bin;
-        finish[1] = robson;
-        return finish;
-        //return bin; 
-    }    
+        //escrever no arquivo:
+
+        
+        String header = "!" + refDeFora + "\n" ;
+        header += refPraFora + "\n";
+        header += "STACKSIZE=" + stackSize + "\n";
+        
+        for (int i = 0; i < dontTouch.size(); i++) {
+            header += dontTouch.get(i) + " ";
+        }
+        header += "//p";
+        header = header.replace(" //p", ""); // retira espaço da ultima linha
+        header += "\n***\n";
+        
+        for (int i = 0; i < bin.length; i++) {
+            header += bin[i] + " ";
+        }
+        header += "\n"; //EOF?
+        System.out.println(header);
+        File obj = new File(nomeMod+".obj");
+        obj.createNewFile();
+        String peterSteele = obj.getAbsolutePath();
+        FileWriter objWriter = new FileWriter(nomeMod+".obj");
+        objWriter.write(header);
+        objWriter.close();
+        System.out.println("escripto");
+        objWriter = new FileWriter(nomeMod+".lst");
+        objWriter.write(lst);
+        objWriter.close();
+        
+        return peterSteele;
+        
+    }
+
 }

@@ -4,6 +4,8 @@ import com.ps.carregador.Carregador;
 import com.ps.executor.Instruction;
 import com.ps.executor.VM;
 import com.ps.montador.Montador;
+import com.ps.macros.Processador_de_macros;
+import com.ps.ligador.Ligador;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
@@ -38,6 +40,7 @@ public class PrimaryController implements Initializable {
     private Stage stage;
     private Stage stage1;
     //Variaveis de instancia de classes
+    public Processador_de_macros proc_macros = new Processador_de_macros();
     public Montador montador = new Montador();
     private SecondaryController controller;
     private DialogTwoController controller2;
@@ -69,6 +72,17 @@ public class PrimaryController implements Initializable {
     private RadioButton isexecutingnow;
 
     //Função de inicialização da Scene atual
+    public void  link_start(){
+        String arq = 'arquivo_entrada.txt';
+        if(fileChoser){
+            arq = selectedFileEnd;
+        }
+        arq = proc_macros.run(arq);
+        arq = montador.montar(arq, stack_base);
+        arq = ligador.main(arq, null);
+        carregador.carregaMem(arq, 512);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         isexecutingnow.setDisable(true);
@@ -109,7 +123,7 @@ public class PrimaryController implements Initializable {
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
             if(newProgram){
-                carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
+                link_start();
                 newProgram = false;
             }      
             
@@ -156,7 +170,7 @@ public class PrimaryController implements Initializable {
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
             if(newProgram){
-                carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
+                link_start();
                 newProgram = false;
             }
         
@@ -202,7 +216,7 @@ public class PrimaryController implements Initializable {
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(false);
             isexecutingnow.setDisable(true);
-            carregador.carregaMem( montador.main(selectedFileEnd,fileChoser,textIntegrated) , stack_base, 512);
+            link_start();
             stope = false;
             this.nextStep();
             controller.inicializaNaTabelaMem();
