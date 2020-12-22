@@ -1,4 +1,4 @@
-package com.ps.processador_de_macros;
+package com.ps.macros;
 
 import java.util.ArrayList;
 import java.util.List;

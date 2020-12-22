@@ -341,8 +341,10 @@ public class Montador {
         objWriter.write(header);
         objWriter.close();
         System.out.println("escripto");
+        
         objWriter = new FileWriter(nomeMod+".lst");
         objWriter.write(lst);
+        lst+= erro;
         objWriter.close();
         
         return peterSteele;

@@ -73,14 +73,14 @@ public class PrimaryController implements Initializable {
 
     //Função de inicialização da Scene atual
     public void  link_start(){
-        String arq = 'arquivo_entrada.txt';
+        String arq = "arquivo_entrada.txt";
         if(fileChoser){
             arq = selectedFileEnd;
         }
-        arq = proc_macros.run(arq);
-        arq = montador.montar(arq, stack_base);
-        arq = ligador.main(arq, null);
-        carregador.carregaMem(arq, 512);
+        arq = Processador_de_macros.run(arq);
+        arq = Montador.montar(arq, stack_base);
+        arq = Ligador.main(arq, null);
+        Carregador.carregaMem(arq, 512);
     }
 
     @Override
