@@ -122,14 +122,10 @@ public class PrimaryController implements Initializable {
      
     @FXML
     private void executeAll() throws IOException {    
-        if(textIntegrated != null || selectedFile != null){
+        if((textIntegrated != null || selectedFile != null) && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
-            if(newProgram){
-                link_start();
-                newProgram = false;
-            }      
             
             this.executingAll();
             
@@ -165,30 +161,30 @@ public class PrimaryController implements Initializable {
 
     private void chamaCarregador(String path){
         lastPathsCarregator = path;
-        Carregador.carregaMem(arq, 512);
+        Carregador.carregaMem(lastPathsCarregator, 512);
         carregado = true;
     }
 
     @FXML
-    void execLigador(ActionEvent event) {
+    void execLigador(ActionEvent event) throws IOException {
         String path1 = pathLigador1.getText();
         String path2 = pathLigador2.getText();
         Ligador.main(path1,path2);
     }
 
     @FXML
-    void execMontador(ActionEvent event) {
-        String path = pathMotador.getText();
+    void execMontador(ActionEvent event) throws IOException {
+        String path = pathMontador.getText();
         chamaMontador(path);
     }
 
-    private void chamaMontador(String path){
+    private void chamaMontador(String path) throws IOException{
         Montador.montar(path, stack_base);
     }
 
     @FXML
     void execProcMacros(ActionEvent event) {
-        String path = pathMacros.gettext();
+        String path = pathMacros.getText();
         chamaMacro(path);
     }
 

@@ -13,12 +13,12 @@ import java.util.HashMap;
 
 public class Processador_de_macros {
 
-    public static File run(String diretorio){
+    public static String run(String diretorio){
         
         Macro macro = new Macro();
         
         //PEGA O NOME DO ARQUIVO PARA O ARQUIVO DE SAIDA    
-        String pathSaida[] = diretorio.split("/")[-1];
+        String pathSaida[] = diretorio.split("/");
         String nomeSaida;
         nomeSaida = pathSaida[pathSaida.length -1];
         nomeSaida = nomeSaida.split(".")[0];

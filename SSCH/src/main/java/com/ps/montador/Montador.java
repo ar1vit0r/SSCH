@@ -25,7 +25,7 @@ public class Montador {
     public static String montar(String diretorio, int stack) throws FileNotFoundException, IOException {
 
         //PEGA O NOME DO ARQUIVO PARA O ARQUIVO DE SAIDA !!!! avaliar se isso é necessario !!!!
-        String pathSaida[] = diretorio.split("/")[-1];
+        String pathSaida[] = diretorio.split("/");
         String nomeSaida;
         nomeSaida = pathSaida[pathSaida.length -1];
         nomeSaida = nomeSaida.split(".")[0];
