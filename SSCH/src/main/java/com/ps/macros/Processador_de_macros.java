@@ -6,10 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 public class Processador_de_macros {
 
@@ -179,6 +176,7 @@ public class Processador_de_macros {
             
             //=====================
             //SALVANDO ARQUIVO DE SAIDA
+            reader.close();
             escrever.close();
             fileWriter.close();
             macro.print();

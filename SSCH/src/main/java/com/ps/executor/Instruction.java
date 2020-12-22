@@ -1,7 +1,5 @@
 package com.ps.executor;
 
-import com.ps.executor.InstructionAction;
-
 public enum Instruction
 {
     // Manter opcode (primeiro número) em ordem ao atualizar, senão withOpcode vai ficar errado.

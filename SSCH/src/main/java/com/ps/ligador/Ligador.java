@@ -10,9 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -28,7 +26,6 @@ public class Ligador {
         Scanner reader1 = new Scanner(textfile1);
         File textfile2 = new File(objeto2);
         Scanner reader2 = new Scanner(textfile2);
-        boolean wasConst = false;
 
         ///---------------------------------------------------------------------Salva cada linha do objeto1
         String Seg1Line1 = reader1.nextLine();  //TabelaUso:    !{DEFORA2=[5], DEFORA=[7, 9]}
@@ -295,6 +292,8 @@ public class Ligador {
         FileWriter objWriter = new FileWriter(nome+".HPX");
         objWriter.write(header);
         objWriter.close();
+        reader1.close();
+        reader2.close();
         System.out.println("Arquivo HPX salvo");
         
         return saida;

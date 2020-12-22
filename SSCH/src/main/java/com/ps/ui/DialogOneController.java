@@ -1,6 +1,5 @@
 package com.ps.ui;
 
-import com.ps.executor.VM;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
@@ -18,7 +17,6 @@ import javafx.stage.Stage;
  */
 public class DialogOneController implements Initializable{
     
-    private VM memoria = VM.getInstance(); // Chamando a instancia via metodo 
     private Alert alert = new Alert(Alert.AlertType.ERROR);
     
     @FXML

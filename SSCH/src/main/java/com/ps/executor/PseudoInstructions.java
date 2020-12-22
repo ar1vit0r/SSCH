@@ -1,9 +1,5 @@
 package com.ps.executor;
 
-import com.ps.executor.Instruction;
-import com.ps.executor.ExecutionLog;
-import com.ps.executor.Registers;
-
 /// Pseudo instruções para facilitar a vida do implementador :).
 /// Veja Registers.re e Registers.re_mode.
 public class PseudoInstructions

@@ -1,7 +1,4 @@
 package com.ps.executor;
-
-import com.ps.executor.Instruction;
-
 public class ExecutionLog
 {
     public static class MemoryUpdate
@@ -33,7 +30,7 @@ public class ExecutionLog
         UnusedOpd2AddressingMode(64),
         MultipleOpd1AddressingModes(128),
         MultipleOpd2AddressingModes(256),
-        OutOfBoundsMemoryAccess(512); // TODO: implementar checagem
+        OutOfBoundsMemoryAccess(512);  //TODO: implementar checagem
 
         public final int v;
         private Error(int v) {this.v = v;}

@@ -1,8 +1,5 @@
 package com.ps.executor;
 
-import com.ps.executor.PseudoInstructions;
-import com.ps.executor.Registers;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -178,10 +175,9 @@ public class InstructionAction
             System.err.print(regs.re + "> ");
             Scanner scanner = new Scanner(input).useDelimiter("\n");
             memory[regs.re] = scanner.nextShort();
-            scanner.close();
     
             regs.pc += Instruction.withOpcode[regs.ri & 0b1111].size;
-    
+            scanner.close();
             return PseudoInstructions.generateLogWithMemoryUpdate(regs, memory, _0, regs.re);
         }
     };

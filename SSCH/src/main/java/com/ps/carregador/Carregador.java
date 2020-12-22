@@ -8,7 +8,6 @@ package com.ps.carregador;
 import com.ps.executor.VM;
 import com.ps.executor.Instruction;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

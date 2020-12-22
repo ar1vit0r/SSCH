@@ -43,7 +43,6 @@ public class Montador {
 
         //flags auxiliares pra errors
         boolean hasEnd = false;
-        boolean hasStart = false;
         boolean hasStack = false;
         int linhaAtual = -1; //do{}while() é overrated
         int pc = 0;
@@ -348,6 +347,7 @@ public class Montador {
         objWriter.close();
         System.out.println("escripto");
         
+        reader.close();
         objWriter = new FileWriter(nomeSaida+".lst");
         objWriter.write(lst);
         lst+= erro;

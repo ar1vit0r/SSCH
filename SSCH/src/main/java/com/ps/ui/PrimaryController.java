@@ -49,7 +49,6 @@ public class PrimaryController implements Initializable {
     private String textIntegrated = null; 
     private Alert alert = new Alert(AlertType.ERROR);
     //Variaveis auxiliares
-    private Boolean fileChoser = false; // true caso esteja carregando um arquivo externo
     private Boolean newProgram = true; //false se o programa ja esta aberto.
     private Boolean stope = false; //true quando termina a execução
     private Boolean sceneOpen = false; //true se a tela secundaria ja estiver aberta
