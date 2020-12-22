@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 
@@ -292,7 +293,7 @@ public class PrimaryController implements Initializable {
     //Funções referentes a entrada do programa
     //Função que vai criar um arquivo com o programa digitado na interface e executar o proc_macros e o montador nele 
     @FXML
-    void link_start(ActionEvent event) {
+    void link_start(ActionEvent event) throws IOException {
         String nomeArq = nomeMod();
         File arquivo = new File(nomeArq+".txt", "w+");
         FileWriter fileWriter = new FileWriter(arquivo, false);
@@ -312,13 +313,14 @@ public class PrimaryController implements Initializable {
     private String nomeMod(){
         String tudo[] = textIntegrated.split(" ");
         for( int i=0; i< tudo.length; i++){
-            if(tudo[i].toUpperCase() == "START"){
-                while(tudo[i+1] == " "){
+            if(tudo[i].toUpperCase().equals("START")){
+                while(tudo[i+1].equals(" ")){
                     i++;
                 }
                 return tudo[i+1];    
             }
         }
+        return null;
     }
     //Função para pegar programa digitado internamente na UI
  
