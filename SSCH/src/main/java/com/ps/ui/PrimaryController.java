@@ -18,11 +18,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.FileChooser;
 import javafx.event.ActionEvent;
 
 import java.net.URL;
@@ -49,7 +47,6 @@ public class PrimaryController implements Initializable {
     private VM vm = VM.getInstance();
     private Carregador carregador = new Carregador();
     private String textIntegrated = null; 
-    private String selectedFileEnd = new String("");
     private Alert alert = new Alert(AlertType.ERROR);
     //Variaveis auxiliares
     private Boolean fileChoser = false; // true caso esteja carregando um arquivo externo
@@ -66,8 +63,6 @@ public class PrimaryController implements Initializable {
     private ToggleGroup fileSelect;
     @FXML
     private ToggleGroup stackSelect;
-    @FXML
-    private File selectedFile = null;
     @FXML
     private TextArea integratedFile;
     @FXML
@@ -122,7 +117,7 @@ public class PrimaryController implements Initializable {
      
     @FXML
     private void executeAll() throws IOException {    
-        if((textIntegrated != null || selectedFile != null) && carregado){
+        if(textIntegrated != null && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -161,7 +156,7 @@ public class PrimaryController implements Initializable {
 
     private void chamaCarregador(String path){
         lastPathsCarregator = path;
-        Carregador.carregaMem(lastPathsCarregator, 512);
+        //Carregador.carregaMem(lastPathsCarregator, 512);
         carregado = true;
     }
 
@@ -192,7 +187,6 @@ public class PrimaryController implements Initializable {
         Processador_de_macros.run(path);
     }
 
-
     //Funções de execução completa
     @FXML
     private void opendialogTwo() throws IOException {    
@@ -206,7 +200,7 @@ public class PrimaryController implements Initializable {
     }
     
     private void executeStep() throws IOException{
-        if((textIntegrated != null || selectedFile != null) && carregado){
+        if(textIntegrated != null && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -224,7 +218,7 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void stepbyStep(ActionEvent event) throws IOException {
-        if((textIntegrated != null || selectedFile != null) && carregado){
+        if(textIntegrated != null && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -250,7 +244,7 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) throws FileNotFoundException, IOException {
-        if((textIntegrated != null || selectedFile != null) && carregado){
+        if(textIntegrated != null && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(false);
             isexecutingnow.setDisable(true);
