@@ -54,8 +54,10 @@ public class PrimaryController implements Initializable {
     private Boolean newProgram = true; //false se o programa ja esta aberto.
     private Boolean stope = false; //true quando termina a execução
     private Boolean sceneOpen = false; //true se a tela secundaria ja estiver aberta
+    private Boolean carregado = false; //true se ja passou pelo carregador alguma vez
     
     private static short stack_base = 12;
+    private String lastPathsCarregator;
     
     //Variaveis FXML
     @FXML
@@ -70,19 +72,19 @@ public class PrimaryController implements Initializable {
     private TextField stackField;
     @FXML
     private RadioButton isexecutingnow;
+    @FXML
+    private TextField pathMacros;
+    @FXML
+    private TextField pathMontador;
+    @FXML
+    private TextField pathLigador1;
+    @FXML
+    private TextField pathLigador2;
+    @FXML
+    private TextField pathCarregador;
+
 
     //Função de inicialização da Scene atual
-    public void  link_start(){
-        String arq = "arquivo_entrada.txt";
-        if(fileChoser){
-            arq = selectedFileEnd;
-        }
-        arq = Processador_de_macros.run(arq);
-        arq = Montador.montar(arq, stack_base);
-        arq = Ligador.main(arq, null);
-        Carregador.carregaMem(arq, 512);
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         isexecutingnow.setDisable(true);
@@ -152,6 +154,39 @@ public class PrimaryController implements Initializable {
     }
 
     //Funções que chamam execução 
+    //Funções para criação dos arquivos e preparação para execução
+    @FXML
+    void execCarregador(ActionEvent event) {
+        String path = pathCarregador.getText();
+        chamaCarregador(path);
+    }
+
+    private void chamaCarregador(String path){
+        lastPathsCarregator = path;
+        Carregador.carregaMem(arq, 512);
+        carregado = true;
+    }
+
+    @FXML
+    void execLigador(ActionEvent event) {
+        String path1 = pathLigador1.getText();
+        String path2 = pathLigador2.getText();
+        Ligador.main(path1,path2);
+    }
+
+    @FXML
+    void execMontador(ActionEvent event) {
+        String path = pathMotador.getText();
+        Montador.montar(path, stack_base);
+    }
+
+    @FXML
+    void execProcMacros(ActionEvent event) {
+        String path = pathMacros.gettext();
+        Processador_de_macros.run(path);
+    }
+
+
     //Funções de execução completa
     @FXML
     private void opendialogTwo() throws IOException {    
@@ -165,14 +200,11 @@ public class PrimaryController implements Initializable {
     }
     
     private void executeStep() throws IOException{
-        if(textIntegrated != null || selectedFile != null){
+        if((textIntegrated != null || selectedFile != null) && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
-            if(newProgram){
-                link_start();
-                newProgram = false;
-            }
+            
         
             if(!sceneOpen){
                 this.newScene();
@@ -186,7 +218,7 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void stepbyStep(ActionEvent event) throws IOException {
-        if(textIntegrated != null || selectedFile != null){
+        if((textIntegrated != null || selectedFile != null) && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -212,11 +244,12 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) throws FileNotFoundException, IOException {
-        if(textIntegrated != null || selectedFile != null){
+        if((textIntegrated != null || selectedFile != null) && carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(false);
             isexecutingnow.setDisable(true);
-            link_start();
+            chamaCarregador(lastPathsCarregator);
+            vm.regs.pc = 0;
             stope = false;
             this.nextStep();
             controller.inicializaNaTabelaMem();

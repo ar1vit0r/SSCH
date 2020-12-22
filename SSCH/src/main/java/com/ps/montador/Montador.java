@@ -24,6 +24,12 @@ public class Montador {
 
     public static String montar(String diretorio, int stack) throws FileNotFoundException, IOException {
 
+        //PEGA O NOME DO ARQUIVO PARA O ARQUIVO DE SAIDA !!!! avaliar se isso é necessario !!!!
+        String pathSaida[] = diretorio.split("/")[-1];
+        String nomeSaida;
+        nomeSaida = pathSaida[pathSaida.length -1];
+        nomeSaida = nomeSaida.split(".")[0];
+
         HashMap<String, ArrayList<Integer>> refDeFora = new HashMap<>();
         HashMap<String, ArrayList<Integer>> refPraFora = new HashMap<>();
         HashMap<String, Integer> rotulos = new HashMap<>();

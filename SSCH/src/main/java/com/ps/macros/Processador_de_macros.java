@@ -17,9 +17,15 @@ public class Processador_de_macros {
         
         Macro macro = new Macro();
         
+        //PEGA O NOME DO ARQUIVO PARA O ARQUIVO DE SAIDA    
+        String pathSaida[] = diretorio.split("/")[-1];
+        String nomeSaida;
+        nomeSaida = pathSaida[pathSaida.length -1];
+        nomeSaida = nomeSaida.split(".")[0];
+        
         //INICIALIZA ARQUIVA DE ENTRADA
         File arquivo_entrada = new File(diretorio);
-        File arquivo_saida = new File("arquivo_saida.asm");
+        File arquivo_saida = new File(nomeSaida + ".asm");
         
         //VETOR QUE ARMAZENA O CONTEUDO DO ARQUIVO DE ENTRADA
         List<String> conteudo = new ArrayList<>();
