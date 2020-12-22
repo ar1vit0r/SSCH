@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Processador_de_macros {
 
-    public static String run(String diretorio){
+    public static File run(String diretorio){
         
         Macro macro = new Macro();
         
@@ -22,7 +22,7 @@ public class Processador_de_macros {
         String nomeSaida;
         nomeSaida = pathSaida[pathSaida.length -1];
         nomeSaida = nomeSaida.split(".")[0];
-        
+
         //INICIALIZA ARQUIVA DE ENTRADA
         File arquivo_entrada = new File(diretorio);
         File arquivo_saida = new File(nomeSaida + ".asm");
