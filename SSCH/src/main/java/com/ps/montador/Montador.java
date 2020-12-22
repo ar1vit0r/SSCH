@@ -340,15 +340,15 @@ public class Montador {
         }
         header += "\n"; //EOF?
         System.out.println(header);
-        File obj = new File(nomeMod+".obj");
+        File obj = new File(nomeSaida+".obj");
         obj.createNewFile();
         String peterSteele = obj.getAbsolutePath();
-        FileWriter objWriter = new FileWriter(nomeMod+".obj");
+        FileWriter objWriter = new FileWriter(nomeSaida+".obj");
         objWriter.write(header);
         objWriter.close();
         System.out.println("escripto");
         
-        objWriter = new FileWriter(nomeMod+".lst");
+        objWriter = new FileWriter(nomeSaida+".lst");
         objWriter.write(lst);
         lst+= erro;
         objWriter.close();

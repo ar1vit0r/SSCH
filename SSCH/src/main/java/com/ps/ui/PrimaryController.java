@@ -27,6 +27,7 @@ import javafx.event.ActionEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -177,12 +178,20 @@ public class PrimaryController implements Initializable {
     @FXML
     void execMontador(ActionEvent event) {
         String path = pathMotador.getText();
+        chamaMontador(path);
+    }
+
+    private void chamaMontador(String path){
         Montador.montar(path, stack_base);
     }
 
     @FXML
     void execProcMacros(ActionEvent event) {
         String path = pathMacros.gettext();
+        chamaMacro(path);
+    }
+
+    private void chamaMacro(String path){
         Processador_de_macros.run(path);
     }
 
@@ -280,27 +289,36 @@ public class PrimaryController implements Initializable {
         System.out.println(stack_base);
         newProgram = true;
     }
-    
-    @FXML
-    private void thisFile(ActionEvent event) {
-        newProgram = true;
-        fileChoser = false;
-    }
-    
     //Funções referentes a entrada do programa
-    //Função para pegar programa de arquivo externo
+    //Função que vai criar um arquivo com o programa digitado na interface e executar o proc_macros e o montador nele 
     @FXML
-    private void loadFile(ActionEvent event) {
-        newProgram = true;
-        fileChoser = true;
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Arquivo de Entrada");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
-        fc.getExtensionFilters().add(extFilter);
-        fc.setInitialDirectory(new File("C:\\Users"));
-        selectedFile = fc.showOpenDialog(null);
-        selectedFileEnd = selectedFile.getAbsolutePath();
-        System.out.println(selectedFileEnd);
+    void link_start(ActionEvent event) {
+        String nomeArq = nomeMod();
+        File arquivo = new File(nomeArq+".txt", "w+");
+        FileWriter fileWriter = new FileWriter(arquivo, false);
+        BufferedWriter escrever = new BufferedWriter(fileWriter);
+        String linhas[] = textIntegrated.split("\n");
+        for(String iterator : linhas){
+            escrever.write(iterator);
+            escrever.newLine();
+        }
+        escrever.close();
+        fileWriter.close();
+        chamaMacro(nomeArq);
+        chamaMontador(nomeArq);
+        
+    }
+
+    private String nomeMod(){
+        String tudo[] = textIntegrated.split(" ");
+        for( int i=0; i< tudo.length; i++){
+            if(tudo[i].toUpperCase() == "START"){
+                while(tudo[i+1] == " "){
+                    i++;
+                }
+                return tudo[i+1];    
+            }
+        }
     }
     //Função para pegar programa digitado internamente na UI
  
