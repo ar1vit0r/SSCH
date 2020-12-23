@@ -31,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
+import javafx.stage.FileChooser;
 
 public class PrimaryController implements Initializable {
 
@@ -149,8 +150,19 @@ public class PrimaryController implements Initializable {
     //Funções para criação dos arquivos e preparação para execução
     @FXML
     void execCarregador(ActionEvent event) {
-        String path = pathCarregador.getText();
-        chamaCarregador(path);
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Arquivo do carregador");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        fc.getExtensionFilters().add(extFilter);
+        fc.setInitialDirectory(new File("C:\\Users"));        
+        File file = fc.showOpenDialog(null);
+        if(file != null){
+            pathCarregador.setText(file.getPath());
+            String path = file.getAbsolutePath();
+            System.out.println("Path: " + path);
+            chamaCarregador(path);
+            } 
+        else{ System.out.println("Error"); }     
     }
 
     private void chamaCarregador(String path){
@@ -161,15 +173,44 @@ public class PrimaryController implements Initializable {
 
     @FXML
     void execLigador(ActionEvent event) throws IOException {
-        String path1 = pathLigador1.getText();
-        String path2 = pathLigador2.getText();
-        Ligador.main(path1,path2);
+        FileChooser fc = new FileChooser();
+        FileChooser fc2 = new FileChooser();
+        fc.setTitle("Primeiro arquivo do ligador");
+        fc2.setTitle("Segundo arquivo do ligador");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        fc.getExtensionFilters().add(extFilter);
+        fc2.getExtensionFilters().add(extFilter);
+        fc.setInitialDirectory(new File("C:\\Users"));  
+        fc2.setInitialDirectory(new File("C:\\Users"));  
+        File file = fc.showOpenDialog(null);
+        File file2 = fc2.showOpenDialog(null);
+        if(file != null && file2 != null){
+            pathLigador1.setText(file.getPath());
+            pathLigador2.setText(file2.getPath());
+            String path1 = file.getAbsolutePath();
+            String path2 = file2.getAbsolutePath();
+            System.out.println("Path: " + path1);
+            System.out.println("Path: " + path2);
+            Ligador.main(path1,path2);
+            } 
+        else{ System.out.println("Error"); }    
     }
 
     @FXML
     void execMontador(ActionEvent event) throws IOException {
-        String path = pathMontador.getText();
-        chamaMontador(path);
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Arquivo do montador");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        fc.getExtensionFilters().add(extFilter);
+        fc.setInitialDirectory(new File("C:\\Users"));        
+        File file = fc.showOpenDialog(null);
+        if(file != null){
+            pathMontador.setText(file.getPath());
+            String path = file.getAbsolutePath();
+            System.out.println("Path: " + path);
+            chamaMontador(path);
+            } 
+        else{ System.out.println("Error"); }     
     }
 
     private void chamaMontador(String path) throws IOException{
@@ -178,8 +219,19 @@ public class PrimaryController implements Initializable {
 
     @FXML
     void execProcMacros(ActionEvent event) {
-        String path = pathMacros.getText();
-        chamaMacro(path);
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Arquivo do processador de macros");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        fc.getExtensionFilters().add(extFilter);
+        fc.setInitialDirectory(new File("C:\\Users"));        
+        File file = fc.showOpenDialog(null);
+        if(file != null){
+            pathMacros.setText(file.getPath());
+            String path = file.getAbsolutePath();
+            System.out.println("Path: " + path);
+            chamaMacro(path);
+            } 
+        else{ System.out.println("Error"); }
     }
 
     private void chamaMacro(String path){
