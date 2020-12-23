@@ -149,7 +149,7 @@ public class PrimaryController implements Initializable {
     //Funções que chamam execução 
     //Funções para criação dos arquivos e preparação para execução
     @FXML
-    void execCarregador(ActionEvent event) {
+    void execCarregador(ActionEvent event) throws FileNotFoundException {
         FileChooser fc = new FileChooser();
         fc.setTitle("Arquivo do carregador");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
@@ -165,7 +165,7 @@ public class PrimaryController implements Initializable {
         else{ System.out.println("Error"); }     
     }
 
-    private void chamaCarregador(String path){
+    private void chamaCarregador(String path) throws FileNotFoundException{
         lastPathsCarregator = path;
         Carregador.carregaMem(lastPathsCarregator, 512);
         carregado = true;
