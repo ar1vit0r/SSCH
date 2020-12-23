@@ -22,7 +22,7 @@ public class Carregador {
     private VM vm = VM.getInstance();
     
     
-    public static void carregaMem(String objeto, int memSize) throws FileNotFoundException{
+    public void carregaMem(String objeto, int memSize) throws FileNotFoundException{
         short[] mem = new short[memSize];
         File textfile = new File(objeto);
         Scanner reader = new Scanner(textfile);
@@ -64,8 +64,8 @@ public class Carregador {
             }
         }
       
-        //vm.regs.acc = 0;// Quando é resetado o valor de um programa o ACC é zerado para a execução do proximo programa
-        //vm.memory = mem;// Carrega na memoria o programa
+        vm.regs.acc = 0;// Quando é resetado o valor de um programa o ACC é zerado para a execução do proximo programa
+        vm.memory = mem;// Carrega na memoria o programa
         System.out.println(Arrays.toString(mem));
     }
     

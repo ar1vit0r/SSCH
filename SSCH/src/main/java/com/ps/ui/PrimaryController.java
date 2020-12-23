@@ -167,7 +167,7 @@ public class PrimaryController implements Initializable {
 
     private void chamaCarregador(String path) throws FileNotFoundException{
         lastPathsCarregator = path;
-        Carregador.carregaMem(lastPathsCarregator, 512);
+        carregador.carregaMem(lastPathsCarregator, 512);
         carregado = true;
     }
 
@@ -214,7 +214,7 @@ public class PrimaryController implements Initializable {
     }
 
     private void chamaMontador(String path) throws IOException{
-        Montador.montar(path, stack_base);
+        System.out.println(Montador.montar(path, stack_base) + " <--Caminho do Arquivo do montador.");
     }
 
     @FXML
@@ -235,7 +235,7 @@ public class PrimaryController implements Initializable {
     }
 
     private void chamaMacro(String path){
-        Processador_de_macros.run(path);
+        System.out.println(Processador_de_macros.run(path) + " <--Caminho do Arquivo do processador de macros.");
     }
 
     //Funções de execução completa
@@ -336,7 +336,7 @@ public class PrimaryController implements Initializable {
     @FXML
     void link_start(ActionEvent event) throws IOException {
         String nomeArq = nomeMod();
-        File arquivo = new File(nomeArq+".txt", "w+");
+        File arquivo = new File(nomeArq+".txt");
         FileWriter fileWriter = new FileWriter(arquivo, false);
         BufferedWriter escrever = new BufferedWriter(fileWriter);
         String linhas[] = textIntegrated.split("\n");
@@ -344,29 +344,37 @@ public class PrimaryController implements Initializable {
             escrever.write(iterator);
             escrever.newLine();
         }
+        chamaMacro(arquivo.getAbsolutePath());
+        chamaMontador(arquivo.getAbsolutePath());
         escrever.close();
-        fileWriter.close();
-        chamaMacro(nomeArq);
-        chamaMontador(nomeArq);
-        
+        fileWriter.close();     
     }
 
     private String nomeMod(){
-        String tudo[] = textIntegrated.split(" ");
-        for( int i=0; i< tudo.length; i++){
-            if(tudo[i].toUpperCase().equals("START")){
-                while(tudo[i+1].equals(" ")){
-                    i++;
-                }
-                return tudo[i+1];    
+        getText();
+        System.out.println("hola que tal");
+        System.out.println(textIntegrated);
+        String tudo = textIntegrated.toUpperCase();
+        String tudo2[] = tudo.split("\n");
+        
+        for( int i=0; i< tudo2.length; i++){
+            if(tudo2[i].toUpperCase().contains("START")){
+                String sex;
+                sex = tudo2[i].split(" ")[1];
+                return sex;    
             }
         }
+        System.out.println("ERRO");
         return null;
     }
     //Função para pegar programa digitado internamente na UI
  
     @FXML
     void getTextArea(KeyEvent event) {
+           getText();
+    }
+    
+    public void getText(){
         textIntegrated = integratedFile.getText();
         newProgram = true;
     }
