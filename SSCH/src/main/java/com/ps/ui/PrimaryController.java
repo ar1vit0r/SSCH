@@ -167,7 +167,7 @@ public class PrimaryController implements Initializable {
 
     private void chamaCarregador(String path){
         lastPathsCarregator = path;
-        //Carregador.carregaMem(lastPathsCarregator, 512);
+        Carregador.carregaMem(lastPathsCarregator, 512);
         carregado = true;
     }
 
