@@ -152,7 +152,7 @@ public class PrimaryController implements Initializable {
     void execCarregador(ActionEvent event) throws FileNotFoundException {
         FileChooser fc = new FileChooser();
         fc.setTitle("Arquivo do carregador");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("HPX Files (*.HPX)", "*.HPX");
         fc.getExtensionFilters().add(extFilter);
         fc.setInitialDirectory(new File("C:\\Users"));        
         File file = fc.showOpenDialog(null);
@@ -200,7 +200,7 @@ public class PrimaryController implements Initializable {
     void execMontador(ActionEvent event) throws IOException {
         FileChooser fc = new FileChooser();
         fc.setTitle("Arquivo do montador");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Asm Files (*.asm)", "*.asm");
         fc.getExtensionFilters().add(extFilter);
         fc.setInitialDirectory(new File("C:\\Users"));        
         File file = fc.showOpenDialog(null);
