@@ -64,8 +64,8 @@ public class Carregador {
             }
         }
       
-        vm.regs.acc = 0;// Quando é resetado o valor de um programa o ACC é zerado para a execução do proximo programa
-        vm.memory = mem;// Carrega na memoria o programa
+        //vm.regs.acc = 0;// Quando é resetado o valor de um programa o ACC é zerado para a execução do proximo programa
+        //vm.memory = mem;// Carrega na memoria o programa
         System.out.println(Arrays.toString(mem));
     }
     
