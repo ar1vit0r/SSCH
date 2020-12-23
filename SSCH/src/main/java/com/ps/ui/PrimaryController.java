@@ -177,7 +177,7 @@ public class PrimaryController implements Initializable {
         FileChooser fc2 = new FileChooser();
         fc.setTitle("Primeiro arquivo do ligador");
         fc2.setTitle("Segundo arquivo do ligador");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Object Files (*.obj)", "*.obj");
         fc.getExtensionFilters().add(extFilter);
         fc2.getExtensionFilters().add(extFilter);
         fc.setInitialDirectory(new File("C:\\Users"));  
