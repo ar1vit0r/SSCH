@@ -25,10 +25,6 @@ public class Montador {
     public static String montar(String diretorio, int stack) throws FileNotFoundException, IOException {
 
         //PEGA O NOME DO ARQUIVO PARA O ARQUIVO DE SAIDA !!!!  isso é necessario !!!!
-        String pathSaida[] = diretorio.split("/");
-        String nomeSaida;
-        nomeSaida = pathSaida[pathSaida.length -1];
-        nomeSaida = nomeSaida.split(".")[0];
 
         HashMap<String, ArrayList<Integer>> refDeFora = new HashMap<>();
         HashMap<String, ArrayList<Integer>> refPraFora = new HashMap<>();
@@ -37,6 +33,8 @@ public class Montador {
 
         //váriaveis/objetos auxiliares pra funcionar
         File textfile = new File(diretorio);
+        String[] nome_saida = textfile.getName().split("[.]");
+        nome_saida[0] = nome_saida[0].concat(".asm");
         Scanner reader = new Scanner(textfile);
         List<String> data = new ArrayList<>();
         //List<Short> bin = new ArrayList<>();
@@ -47,7 +45,7 @@ public class Montador {
         int linhaAtual = -1; //do{}while() é overrated
         int pc = 0;
         int stackSize = 0;
-        String nomeMod = "";
+        String nomeMod = nome_saida[0];
         String erro = "";
 
         String lst = "";        
@@ -59,7 +57,7 @@ public class Montador {
 
             if (trololo.length() > 80) {
                 erro += new ErrorManager(1, linhaAtual).errorWarning();
-                System.out.println(erro); // erro de linha mucho grande
+                //System.out.println(erro); // erro de linha mucho grande
             }
 
             if (!trololo.startsWith("*")) { //joga comentários fora 
@@ -67,7 +65,6 @@ public class Montador {
                 String[] aux = fenriz[0].split(" ");
                 //System.out.println(aux.length);
                 if (aux[0].equals("START")) {
-                    nomeMod = aux[1];
                     continue;
                 }
 
@@ -135,9 +132,6 @@ public class Montador {
             erro += new ErrorManager(9, linhaAtual).errorWarning();
         }
 
-        for (int i = 0; i < data.size(); i++) {
-            System.out.println(data.get(i));
-        }
         linhaAtual = 0;
         short[] bin = new short[data.size()];
         pc = 0;
@@ -262,7 +256,7 @@ public class Montador {
                     if (data.get(i).startsWith("CONST")) {
                         bin[i] = (short) Integer.parseInt(data.get(i).replace("CONST", ""));
                         dontTouch.add(pc);
-                        System.out.println(pc);
+                        //System.out.println(pc);
                         lst += "\n" + pc + " " + bin[i] + " " + linhaAtual;
                         pc++;
                         linhaAtual++;
@@ -292,7 +286,7 @@ public class Montador {
                     if (refDeFora.containsKey(data.get(i))) {
                         refDeFora.get(data.get(i)).add(i);
                         bin[i] = 0; //placeholder, vai ser alterado no ligador
-                        System.out.println(data.get(i) + " na pos +" + i);
+                        //System.out.println(data.get(i) + " na pos +" + i);
                         lst = lst + bin[i] + " " + linhaAtual;
 
                         break;
@@ -317,9 +311,6 @@ public class Montador {
                     lst = lst + bin[i] + " " + linhaAtual;
             }
         }
-        for (int i = 0; i < bin.length; i++) {
-            System.out.println(bin[i]);
-        }
         //escrever no arquivo:
 
         
@@ -338,19 +329,19 @@ public class Montador {
             header += bin[i] + " ";
         }
         header += "\n"; //EOF?
-        System.out.println(header);
-        File obj = new File(nomeSaida+".obj");
+        //System.out.println(header);
+        File obj = new File(nomeMod+".obj");
         obj.createNewFile();
         String peterSteele = obj.getAbsolutePath();
-        FileWriter objWriter = new FileWriter(nomeSaida+".obj");
+        FileWriter objWriter = new FileWriter(nomeMod+".obj");
         objWriter.write(header);
         objWriter.close();
-        System.out.println("escripto");
+        //System.out.println("escripto");
         
         reader.close();
-        objWriter = new FileWriter(nomeSaida+".lst");
-        objWriter.write(lst);
+        objWriter = new FileWriter(nomeMod+".lst");
         lst+= erro;
+        objWriter.write(lst);
         objWriter.close();
         
         return peterSteele;

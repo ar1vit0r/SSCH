@@ -13,13 +13,15 @@ import java.util.HashMap;
 
 public class Processador_de_macros {
 
-    public static File run(String diretorio, String name){
+    public static File run(String diretorio){
         
         List<Macro> macros = new ArrayList<>();
         
         //INICIALIZA ARQUIVA DE ENTRADA
         File arquivo_entrada = new File(diretorio);
-        File arquivo_saida = new File(name + ".asm");
+        String[] nome_saida = arquivo_entrada.getName().split("[.]");
+        nome_saida[0] = nome_saida[0].concat(".asm");
+        File arquivo_saida = new File(nome_saida[0]);       
         
         //VETOR QUE ARMAZENA O CONTEUDO DO ARQUIVO DE ENTRADA
         List<String> conteudo = new ArrayList<>();
