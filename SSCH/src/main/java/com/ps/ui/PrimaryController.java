@@ -45,10 +45,10 @@ public class PrimaryController implements Initializable {
     public Montador montador = new Montador();
     private SecondaryController controller;
     private DialogTwoController controller2;
-    private VM vm = VM.getInstance();
-    private Carregador carregador = new Carregador();
+    private final VM vm = VM.getInstance();
+    private final Carregador carregador = new Carregador();
     private String textIntegrated = null; 
-    private Alert alert = new Alert(AlertType.ERROR);
+    private final Alert alert = new Alert(AlertType.ERROR);
     //Variaveis auxiliares
     private Boolean newProgram = true; //false se o programa ja esta aberto.
     private Boolean stope = false; //true quando termina a execução
@@ -117,7 +117,7 @@ public class PrimaryController implements Initializable {
      
     @FXML
     private void executeAll() throws IOException {    
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -229,13 +229,13 @@ public class PrimaryController implements Initializable {
             pathMacros.setText(file.getPath());
             String path = file.getAbsolutePath();           
             System.out.println("Path: " + path);
-            chamaMacro(path, file.getName());
+            chamaMacro(path);
             } 
         else{ System.out.println("Error"); }
     }
 
-    private void chamaMacro(String path, String name){
-        System.out.println(Processador_de_macros.run(path, name) + " <--Caminho do Arquivo do processador de macros.");
+    private void chamaMacro(String path){
+        System.out.println(Processador_de_macros.run(path) + " <--Caminho do Arquivo do processador de macros.");
     }
 
     //Funções de execução completa
@@ -251,7 +251,7 @@ public class PrimaryController implements Initializable {
     }
     
     private void executeStep() throws IOException{
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -269,7 +269,7 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void stepbyStep(ActionEvent event) throws IOException {
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -295,7 +295,7 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) throws FileNotFoundException, IOException {
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(false);
             isexecutingnow.setDisable(true);
@@ -344,7 +344,7 @@ public class PrimaryController implements Initializable {
             escrever.write(iterator);
             escrever.newLine();
         }
-        chamaMacro(arquivo.getAbsolutePath(), arquivo.getName());
+        chamaMacro(arquivo.getAbsolutePath());
         chamaMontador(arquivo.getAbsolutePath());
         escrever.close();
         fileWriter.close();     

@@ -285,7 +285,6 @@ public class Ligador {
         header += "\n"; //EOF?
         System.out.println(header);
         File obj = new File(nome+".HPX");
-        obj.createNewFile();
         
         String saida = obj.getAbsolutePath();
         nome = nome.replace(".obj", "");
