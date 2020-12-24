@@ -227,15 +227,15 @@ public class PrimaryController implements Initializable {
         File file = fc.showOpenDialog(null);
         if(file != null){
             pathMacros.setText(file.getPath());
-            String path = file.getAbsolutePath();
+            String path = file.getAbsolutePath();           
             System.out.println("Path: " + path);
-            chamaMacro(path);
+            chamaMacro(path, file.getName());
             } 
         else{ System.out.println("Error"); }
     }
 
-    private void chamaMacro(String path){
-        System.out.println(Processador_de_macros.run(path) + " <--Caminho do Arquivo do processador de macros.");
+    private void chamaMacro(String path, String name){
+        System.out.println(Processador_de_macros.run(path, name) + " <--Caminho do Arquivo do processador de macros.");
     }
 
     //Funções de execução completa
@@ -344,7 +344,7 @@ public class PrimaryController implements Initializable {
             escrever.write(iterator);
             escrever.newLine();
         }
-        chamaMacro(arquivo.getAbsolutePath());
+        chamaMacro(arquivo.getAbsolutePath(), arquivo.getName());
         chamaMontador(arquivo.getAbsolutePath());
         escrever.close();
         fileWriter.close();     

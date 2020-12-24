@@ -8,6 +8,8 @@ public class Macro {
     public List<String> definicao = new ArrayList<>();
     public List<String> argumentos = new ArrayList<>();
     public List<String> labels = new ArrayList<>();
+    public int MCDEFN = 0;
+    public int MCEND = 0;
     
     public void print(){
         System.out.println(nome);
