@@ -117,7 +117,7 @@ public class PrimaryController implements Initializable {
      
     @FXML
     private void executeAll() throws IOException {    
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -251,7 +251,7 @@ public class PrimaryController implements Initializable {
     }
     
     private void executeStep() throws IOException{
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -269,7 +269,7 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private void stepbyStep(ActionEvent event) throws IOException {
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(true);
             isexecutingnow.setDisable(true);
@@ -295,7 +295,7 @@ public class PrimaryController implements Initializable {
     //Funções para migrar entre maneiras de execução
     @FXML
     private void resetAll(ActionEvent event) throws FileNotFoundException, IOException {
-        if(textIntegrated != null && carregado){
+        if(carregado){
             isexecutingnow.setDisable(false);
             isexecutingnow.setSelected(false);
             isexecutingnow.setDisable(true);

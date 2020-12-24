@@ -34,7 +34,7 @@ public class Montador {
         //váriaveis/objetos auxiliares pra funcionar
         File textfile = new File(diretorio);
         String[] nome_saida = textfile.getName().split("[.]");
-        nome_saida[0] = nome_saida[0].concat(".asm");
+        nome_saida[0] = nome_saida[0];
         Scanner reader = new Scanner(textfile);
         List<String> data = new ArrayList<>();
         //List<Short> bin = new ArrayList<>();
